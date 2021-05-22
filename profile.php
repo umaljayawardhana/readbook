@@ -3,6 +3,106 @@
 <head>
 	<title>Profile | Readbook</title>
 </head>
+<style>
+
+
+
+	#blue_bar{
+		height: 50px;
+		background-color: rgb(51, 168, 255);
+		color: #d9dfeb;
+	}
+
+	#search_box {
+		border-radius: 5px;
+		width: 400px;
+		height: 20px;
+		border: none;
+		padding: 4px;
+		background-image: url(search.png);
+		background-repeat: no-repeat;
+		background-position: right;
+		
+	}
+
+	#profile_pic {
+		width: 150px;
+		margin-top: -200px;
+		border-radius: 50%;
+		border: solid 2px white;
+	}
+
+	#menu_button {
+		width: 100px;
+		display: inline-block;
+		margin: 2px;
+	}
+
+	#friends_img {
+		width: 75px;
+		float: left;
+		margin: 8px;
+		height: 75px;
+	}
+
+	#friends_bar {
+		font-size: 15px;
+
+		background-color: white;
+		min-height: 400px;
+		margin-top: 20px;
+		color: #aaa;
+		padding: 8px;		
+	}
+
+	#friends {
+		clear: both;
+		font-size: 12px;
+		font-weight: bold;
+		color:  rgb(51, 168, 255);
+
+	}
+
+	textarea {
+		width: 100%;
+		border: none;
+		font-family: tahoma;
+		font-size: 14px;
+		height: 60px ;
+
+
+
+	}
+
+	#post_button {
+		float: right;
+		background-color:  rgb(51, 168, 255);
+		border: none;
+		color: white;
+		padding: 4px;
+		font-size: 14px;
+		border-radius: 2px;
+		width: 50px;
+	}
+
+
+	#post_bar {
+		margin-top: 20px;
+		margin-left: 20px;
+		background-color: white;
+		padding: 10px;
+	}
+
+	#post {
+		padding: 4px;
+		font-size: 13px;
+		display: flex;
+		margin-bottom: 20px;
+	}
+
+
+	
+</style>
 <body style="font-family: tahoma; background-color: #d0d8e4;">
 	<!--top bar-->
 	<br>
