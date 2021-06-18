@@ -27,7 +27,6 @@
 
 	#profile_pic {
 		width: 150px;
-		margin-top: -200px;
 		border-radius: 50%;
 		border: solid 2px white;
 	}
@@ -48,11 +47,13 @@
 	#friends_bar {
 		font-size: 15px;
 
-		background-color: white;
 		min-height: 400px;
 		margin-top: 20px;
 		color: #aaa;
 		padding: 8px;		
+		text-align: center;
+		font-size: 20px;
+		color: rgb(51, 168, 255);
 	}
 
 	#friends {
@@ -118,61 +119,25 @@
 	<br>
 	<div style="width: 800px; margin: auto;  min-height: 400px;">
 		
-		<div style="background-color: white; text-align: center; font-size: 15px; color:  rgb(51, 168, 255)">
-			<img src="coverPhoto.jpg" style="width: 100%;">
-			<img id="profile_pic" src="profilepic.jpg"> 
-			<br>
-			<div style="font-size:25px"> Lionel Messi  </div>
-			<br>
-			 <div id="menu_button">Timeline </div>
-			 <div id="menu_button">About </div>
-			<div id="menu_button"> Friends </div>
-			<div id="menu_button"> Photoes </div>
-			<div id="menu_button"> Settings</div>
-			 
-		</div>
-		<br>
+		
 
 		<!--below area -->
 		<div style="display: flex;">
 
 			<!--friends area -->
-
 			<div style=" min-height: 400px; flex: 1;">
 
 				<div id="friends_bar">
-					Friends <br>
 
-					<div id="friends">
-						<img id="friends_img" src="Cristiano_Ronaldo.jpg"> <br>
-						Cristiano Ronaldo												
-
-					</div>
-
-					<div id="friends">
-						<img  id="friends_img" src="Neymar.jpg"> <br>
-						Neymar
-					</div>
-
-					<div id="friends">
-						<img id="friends_img" src="Xavi.jpg"> <br>
-						Xavi									
-
-					</div>
-
-					<div id="friends">
-						<img id="friends_img" src="Gareth_Bale.jpg"> <br>
-						Gareth Bale													
-
-					</div>
+					<img src="profilepic.jpg" id="profile_pic">
+				 	<br>
+				 	Lionel Messi
 					
 				</div>
 
 			</div>
 
 			<!-- Post Area-->
-
-
 			<div style="min-height: 400px; flex: 2.5; padding: 20px padding-right: 0px; " >
 			
 				 <div style="border: solid thin #aaa;  padding: 10px; background-color:  white; margin-left: 20px; margin-top: 17px;">
@@ -192,15 +157,14 @@
 
 			 		<div id="post">
 			 			<div>
-			 				<img src="Cristiano_Ronaldo.jpg" style="width: 75px; margin-right: 4px;">
+			 				<img src="Paul_Scholes.jpg" style="width: 75px; margin-right: 4px;">
 			 			</div>
 			 			<div>
-			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Cristiano Ronaldo</div>
-			 				"For me, to watch Messi play is a pleasure – it’s like having an orgasm 
-							 – it’s an incredible pleasure. He is always going forwards. He never passes 
-							 the ball backwards or sideways.
-							  He has only one idea, to run towards the goal. So as a football fan,
-							   just enjoy the show."
+			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Paul Scholes</div>
+			 				“I think about the great players with whom I have shared a pitch:
+							  Eric Cantona,
+							  Zinedine Zidane, Pirlo, Xavi, Ronaldo and the 
+							  greatest of them all is Messi.”
 			 				<br> <br>
 
 			 				<a href="" >Like</a>. <a href="" >Comment</a> . <span style="color: #999;">2021 May 13</span>
@@ -211,13 +175,11 @@
 
 			 		<div id="post">
 			 			<div>
-			 				<img src="Neymar.jpg" style="width: 75px; margin-right: 4px;">
+			 				<img src="Javier_Mascherano.jpg" style="width: 75px; margin-right: 4px;">
 			 			</div>
 			 			<div>
-			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Neymar</div>
-			 				"For the world of football, Messi is a treasure because he is a role model for
-							  children around the world… Messi will be the player to win the most Ballons d’Or in history. 
-							  He will win five, six, seven. He is incomparable. He’s in a different league."
+			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Javier Mascherano</div>
+			 				"Although he may not be human, it’s good that Messi still thinks he is."
 			 				<br> <br>
 
 			 				<a href="" >Like</a>. <a href="" >Comment</a> . <span style="color: #999;">2021 May 13</span>
