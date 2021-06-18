@@ -131,7 +131,7 @@
 
 					<img src="profilepic.jpg" id="profile_pic">
 				 	<br>
-				 	Mia Khalifa
+				 	Lionel Messi
 					
 				</div>
 
@@ -157,11 +157,14 @@
 
 			 		<div id="post">
 			 			<div>
-			 				<img src="user1.jpg" style="width: 75px; margin-right: 4px;">
+			 				<img src="Paul_Scholes.jpg" style="width: 75px; margin-right: 4px;">
 			 			</div>
 			 			<div>
-			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">user2</div>
-			 				Hello write something here .................................................................
+			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Paul Scholes</div>
+			 				“I think about the great players with whom I have shared a pitch:
+							  Eric Cantona,
+							  Zinedine Zidane, Pirlo, Xavi, Ronaldo and the 
+							  greatest of them all is Messi.”
 			 				<br> <br>
 
 			 				<a href="" >Like</a>. <a href="" >Comment</a> . <span style="color: #999;">2021 May 13</span>
@@ -172,11 +175,11 @@
 
 			 		<div id="post">
 			 			<div>
-			 				<img src="user2.jpg" style="width: 75px; margin-right: 4px;">
+			 				<img src="Javier_Mascherano.jpg" style="width: 75px; margin-right: 4px;">
 			 			</div>
 			 			<div>
-			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">user3</div>
-			 				write something here ------------------------------------------------------------------------
+			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Javier Mascherano</div>
+			 				"Although he may not be human, it’s good that Messi still thinks he is."
 			 				<br> <br>
 
 			 				<a href="" >Like</a>. <a href="" >Comment</a> . <span style="color: #999;">2021 May 13</span>

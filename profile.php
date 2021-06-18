@@ -119,10 +119,10 @@
 	<div style="width: 800px; margin: auto;  min-height: 400px;">
 		
 		<div style="background-color: white; text-align: center; font-size: 15px; color:  rgb(51, 168, 255)">
-			<img src="miaback.jpg" style="width: 100%;">
+			<img src="coverPhoto.jpg" style="width: 100%;">
 			<img id="profile_pic" src="profilepic.jpg"> 
 			<br>
-			<div style="font-size:25px"> Mia Khalifa  </div>
+			<div style="font-size:25px"> Lionel Messi  </div>
 			<br>
 			 <div id="menu_button">Timeline </div>
 			 <div id="menu_button">About </div>
@@ -144,26 +144,25 @@
 					Friends <br>
 
 					<div id="friends">
-						<img id="friends_img" src="user1.jpg"> <br>
-						name_1												
+						<img id="friends_img" src="Cristiano_Ronaldo.jpg"> <br>
+						Cristiano Ronaldo												
 
 					</div>
 
 					<div id="friends">
-						<img id="friends_img" src="user2.jpg"> <br>
-						name_2												
+						<img  id="friends_img" src="Neymar.jpg"> <br>
+						Neymar
+					</div>
+
+					<div id="friends">
+						<img id="friends_img" src="Xavi.jpg"> <br>
+						Xavi									
 
 					</div>
 
 					<div id="friends">
-						<img id="friends_img" src="user3.jpg"> <br>
-						name_3										
-
-					</div>
-
-					<div id="friends">
-						<img id="friends_img" src="user4.jpg"> <br>
-						name_4													
+						<img id="friends_img" src="Gareth_Bale.jpg"> <br>
+						Gareth Bale													
 
 					</div>
 					
@@ -193,11 +192,15 @@
 
 			 		<div id="post">
 			 			<div>
-			 				<img src="user1.jpg" style="width: 75px; margin-right: 4px;">
+			 				<img src="Cristiano_Ronaldo.jpg" style="width: 75px; margin-right: 4px;">
 			 			</div>
 			 			<div>
-			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">name_1</div>
-			 				write something
+			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Cristiano Ronaldo</div>
+			 				"For me, to watch Messi play is a pleasure – it’s like having an orgasm 
+							 – it’s an incredible pleasure. He is always going forwards. He never passes 
+							 the ball backwards or sideways.
+							  He has only one idea, to run towards the goal. So as a football fan,
+							   just enjoy the show."
 			 				<br> <br>
 
 			 				<a href="" >Like</a>. <a href="" >Comment</a> . <span style="color: #999;">2021 May 13</span>
@@ -208,11 +211,13 @@
 
 			 		<div id="post">
 			 			<div>
-			 				<img src="user2.jpg" style="width: 75px; margin-right: 4px;">
+			 				<img src="Neymar.jpg" style="width: 75px; margin-right: 4px;">
 			 			</div>
 			 			<div>
-			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">name_2</div>
-			 				write something
+			 				<div style="font-weight: bold;color: rgb(51, 168, 255);">Neymar</div>
+			 				"For the world of football, Messi is a treasure because he is a role model for
+							  children around the world… Messi will be the player to win the most Ballons d’Or in history. 
+							  He will win five, six, seven. He is incomparable. He’s in a different league."
 			 				<br> <br>
 
 			 				<a href="" >Like</a>. <a href="" >Comment</a> . <span style="color: #999;">2021 May 13</span>
