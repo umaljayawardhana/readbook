@@ -1,3 +1,48 @@
+<?php
+
+	include("classes/connect.php");
+	include("classes/signup.php");
+
+	$first_name = "";
+	$last_name = "";
+	$gender = "";
+	$email = "";
+
+	//_server arry in key is request method and value is post
+
+	if($_SERVER['REQUEST_METHOD'] == 'POST'){ //click signup button to work post 
+		//affter click signup button work signup class and send _post array data to evaluvate function $data variable
+
+		$signup = new Signup();
+		$result = $signup->evaluate($_POST);
+
+		if($result != ""){
+
+			
+			echo "<br>The following erros occured : <br><br>";
+			echo $result;
+			
+		} else{
+			header("Location: profile.php");
+			die;
+		}
+
+
+		//_post variable array values assign here
+
+		$first_name = $_POST['first_name'];
+		$last_name = $_POST['last_name'];
+		$gender = $_POST['gender'];
+		$email = $_POST['email'];
+
+	}
+
+	
+	
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,13 +123,13 @@
 
 			<form method="post" action="">
 
-				<input  name="first_name" type="text" id="text" placeholder="First name"><br><br>
-				<input  name="last_name" type="text" id="text" placeholder="Last name"><br><br>
+				<input value="<?php echo $first_name?>"  name="first_name" type="text" id="text" placeholder="First name"><br><br>
+				<input value="<?php echo $last_name?>" name="last_name" type="text" id="text" placeholder="Last name"><br><br>
 
 				<span style="font-weight: normal;">Gender:</span><br>
 				<select id="text" name="gender">
 					
-					<option></option>
+					<option> <?php echo $gender?></option>
 					<option>Male</option>
 					<option>Female</option>
 
@@ -92,7 +137,7 @@
 				<br><br>
 				<input  name="email" type="text" id="text" placeholder="Email"><br><br>
 				
-				<input name="password" type="password" id="text" placeholder="Password"><br><br>
+				<input value="<?php echo $email?>" name="password" type="password" id="text" placeholder="Password"><br><br>
 				<input name="password2" type="password" id="text" placeholder="Retype Password"><br><br>
 
 				<input type="submit" id="button" value="Sign up">
