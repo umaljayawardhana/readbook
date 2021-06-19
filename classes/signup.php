@@ -14,6 +14,42 @@ class Signup{
 
                 $this->error = $this->error . $key . "is empty ! <br>";
             }
+
+            if($key == "email"){
+                if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$value)) {
+                    $this->error = $this->error . "invalid email address!<br>";
+                }
+            }
+
+            if($key == "first_name")
+			{
+				if (is_numeric($value)) {
+        
+ 					$this->error = $this->error . "first name cant be a number<br>";
+    			}
+
+    			if (strstr($value, " ")) {
+        
+ 					$this->error = $this->error . "first name cant have spaces<br>";
+    			}
+ 
+			}
+
+			if($key == "last_name")
+			{
+				if (is_numeric($value)) {
+        
+ 					$this->error = $this->error . "last name cant be a number<br>";
+    			}
+
+    			if (strstr($value, " ")) {
+        
+ 					$this->error = $this->error . "last name cant have spaces<br>";
+    			}
+
+			}
+
+
         }
 
         if($this->error == ""){ //data become a no errors 
@@ -66,4 +102,4 @@ class Signup{
 
 
 
-?>
+?>  
