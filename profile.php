@@ -10,6 +10,7 @@
 	include("classes/connect.php");
 	include("classes/login.php");
 	include("classes/user.php");
+	include("classes/post.php");
 
 	//check if user is logged in
 	if(isset($_SESSION['readbook_userid']) && is_numeric($_SESSION['readbook_userid']) ){
@@ -17,7 +18,7 @@
 		$id = $_SESSION['readbook_userid'];
 		$login = new Login();
 		$result = $login->check_login($id);
-		print_r($result);
+		//print_r($result);
 
 		if($result){
 
@@ -33,7 +34,7 @@
 
 		}else{
 			header("Location: login.php");
-			print_r($result);
+			//print_r($result);
 			die;
 		}
 		
@@ -44,7 +45,18 @@
 	}
 			
 
-	//print_r($user_data);
+	//for posting starts here 
+	if($_SERVER['REQUEST_METHOD'] == "POST"){
+
+		$post = new Post();
+		
+		$id = $_SESSION['readbook_userid'];
+		$result = $post->create_post($id, $_POST);
+
+		print_r($_POST);
+	}
+
+
 
 ?>
 
@@ -227,12 +239,16 @@
 			<!-- Post Area-->
 
 
-			<div style="min-height: 400px; flex: 2.5; padding: 20px padding-right: 0px; " >
+			<div style="min-height: 400px; flex: 2.5; padding: 20px; padding-right: 0px; " >
 			
-				 <div style="border: solid thin #aaa;  padding: 10px; background-color:  white; margin-left: 20px; margin-top: 17px;">
-			 	 <textarea  placeholder="Post Your stories ">  </textarea>
-		 	 	 <input type="submit" id="post_button" value="Post">
-		 	 	 <br>
+				 <div style="border: solid thin #aaa;  padding: 10px; background-color:  white;">
+
+				 <form method="post">
+
+			 	 	<textarea name="post"  placeholder="Post Your stories ">  </textarea>
+		 	 	 	<input type="submit" id="post_button" value="Post">
+		 	 	 	<br>
+				   </form>
 			 	 	
 			 	
 			 	
