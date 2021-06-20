@@ -1,15 +1,52 @@
-<div id="friends">
+<?php
 
-    <?php 
-            $image = "images/male.jpg";
-            if($FRIEND_ROW['gender'] == "Female"){
-                $image = "images/female.jpg";
+class User{
 
-            }
+    public function get_data($id){
 
-            ?>
+        $query = "select * from users where userid = '$id' limit 1";
 
-    <img id="friends_img" src="<?php echo $image?>"> <br>
-    <?php echo $FRIEND_ROW['first_name'] . " " . $FRIEND_ROW['last_name'] ?>
+        $DB = new Database();
+        $result = $DB->read($query);
 
-</div>
+        if($result){
+            $row = $result[0];
+            return $row;
+        }else
+        {
+            return false;
+        }
+        
+
+
+    }
+
+    public function get_user($id){
+
+        $query = "select * from users where userid = '$id' limit 1";
+        $DB = new Database();
+        $result = $DB->read($query);
+
+        if($result){
+            return $result[0];
+        }else{
+            return false;
+        }
+    }
+
+    public function get_friends($id){
+
+        $query = "select * from users where userid != '$id' ";
+        $DB = new Database();
+        $result = $DB->read($query);
+
+        if($result){
+            return $result;
+        }else{
+            return false;
+        }
+    }
+}
+
+
+?>
