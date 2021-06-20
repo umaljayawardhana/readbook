@@ -1,3 +1,54 @@
+<?php
+
+
+
+	session_start();
+	//unset($_SESSION['readbook_userid']); //logout
+
+	//print_r($_SESSION);
+	//$_SESSION['readbook_userid'] == "";
+	include("classes/connect.php");
+	include("classes/login.php");
+	include("classes/user.php");
+
+	//check if user is logged in
+	if(isset($_SESSION['readbook_userid']) && is_numeric($_SESSION['readbook_userid']) ){
+
+		$id = $_SESSION['readbook_userid'];
+		$login = new Login();
+		$result = $login->check_login($id);
+		print_r($result);
+
+		if($result){
+
+			//retrive user data
+			$user = new User();
+			$user_data = $user->get_data($id);
+			//echo "everythin is fine";
+
+			if(!$user_data){
+				header("Location: login.php");
+				die;
+			}
+
+		}else{
+			header("Location: login.php");
+			print_r($result);
+			die;
+		}
+		
+		
+	}else {
+		header("Location: login.php");
+			die;
+	}
+			
+
+	//print_r($user_data);
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,8 +160,11 @@
 	<div id="blue_bar">
 		<div style="width: 800px; margin: auto; font-size: 30px;">
 			Readbook  &nbsp &nbsp
-			<input type="text" placeholder="Search for people" id="search_box" >
-			<img src="profilepic.jpg" style="width: 50px; float: right;">  
+			<input type="text" placeholder="Search for people" id="search_box" >	
+			<img src="profilepic.jpg" style="width: 60px;height:50px; float: right;">  
+			<a href="logout.php">
+			<span style="font-size: 20px;float:right;margin:8px;color:white;">Logout</span>
+			</a>
 		</div>
 	</div>		
 
@@ -122,7 +176,7 @@
 			<img src="coverPhoto.jpg" style="width: 100%;">
 			<img id="profile_pic" src="profilepic.jpg"> 
 			<br>
-			<div style="font-size:25px"> Lionel Messi  </div>
+			<div style="font-size:25px"> <?php echo $user_data['first_name']. " ". $user_data['last_name'] ?>  </div>
 			<br>
 			 <div id="menu_button">Timeline </div>
 			 <div id="menu_button">About </div>
