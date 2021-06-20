@@ -74,6 +74,11 @@
 	$id = $_SESSION['readbook_userid'];
 	$posts = $post->get_posts($id);
 
+	//collect friends
+	$user = new User();
+		
+	$id = $_SESSION['readbook_userid'];
+	$friends = $user->get_friends($id);
 
 
 
@@ -229,28 +234,26 @@
 				<div id="friends_bar">
 					Friends <br>
 
-					<div id="friends">
-						<img id="friends_img" src="Cristiano_Ronaldo.jpg"> <br>
-						Cristiano Ronaldo												
 
-					</div>
+					<?php
+					 if($friends){
 
-					<div id="friends">
-						<img  id="friends_img" src="Neymar.jpg"> <br>
-						Neymar
-					</div>
+						foreach ($friends as $FRIEND_ROW) {
+							# code...
+							//$user = new User();
+							//$ROW_USER = $user->get_user($ROW['userid']);
 
-					<div id="friends">
-						<img id="friends_img" src="Xavi.jpg"> <br>
-						Xavi									
+							include("user.php");
+						}
+					 }
 
-					</div>
+	
+					 ?>
+			 		
 
-					<div id="friends">
-						<img id="friends_img" src="Gareth_Bale.jpg"> <br>
-						Gareth Bale													
+					
 
-					</div>
+				
 					
 				</div>
 
