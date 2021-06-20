@@ -1,3 +1,39 @@
+<?php
+
+
+
+	session_start();
+	//print_r($_SESSION);
+	//$_SESSION['readbook_userid'] == "";
+	include("classes/connect.php");
+	include("classes/login.php");
+
+	//check if user is logged in
+	if(isset($_SESSION['readbook_userid']) && is_numeric($_SESSION['readbook_userid']) ){
+
+		$id = $_SESSION['readbook_userid'];
+		$login = new Login();
+		$result = $login->check_login($id);
+		print_r($result);
+
+		if($result){
+
+			//retrive user data
+			echo "everythin is fine";
+		}else{
+			header("Location: login.php");
+			die;
+		}
+		
+		
+	}else {
+		header("Location: login.php");
+			die;
+	}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
