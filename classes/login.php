@@ -21,20 +21,23 @@ class Login
 
 			$row = $result[0];
 
-			if($this->hash_text($password) == $row['password'])
+			if(($password) == $row['password'])
 			{
 
 				//create session data
-				$_SESSION['mybook_userid'] = $row['userid'];
+				$_SESSION['readbook_userid'] = $row['userid'];
+				
 
 			}else
 			{
 				$this->error .= "wrong email or password<br>";
+				print_r($row['password']);
 			}
 		}else
 		{
 
 			$this->error .= "wrong email or password<br>";
+			
 		}
 
 		return $this->error;
@@ -69,7 +72,7 @@ class Login
 					die;
 				}else{
 
-					$_SESSION['mybook_userid'] = 0;
+					$_SESSION['readbook_userid'] = 0;
 				}
 			}
  
@@ -80,7 +83,7 @@ class Login
 				header("Location: login.php");
 				die;
 			}else{
-				$_SESSION['mybook_userid'] = 0;
+				$_SESSION['readbook_userid'] = 0;
 			}
 		}
 
