@@ -11,14 +11,30 @@
     include("classes/user.php");
     include("classes/post.php");
 
+    $login = new Login();
+	$user_data = $login->check_login($_SESSION['readbook_userid']);
+
     //for posting starts here 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 
         if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != ""){ //check file in
 
-            $filename = $_FILES['file']['name'];
-            move_uploaded_file($_FILES['file']['tmp_name'], "uploads/". $filename );
+            $filename =  "uploads/". $_FILES['file']['name'];
+            move_uploaded_file($_FILES['file']['tmp_name'], $filename );
+
+            if(file_exists($filename)){
+                //echo "umal";
+                $userid = $user_data['userid'];
+                //print_r($userid);
+                $query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
+                $DB = new Database();
+                $DB->save($query);
+
+                header(("Location: profile.php"));
+                die;
+
+            }
 
         }else{
                 echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
