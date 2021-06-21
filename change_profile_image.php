@@ -14,11 +14,19 @@
     //for posting starts here 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
 
-        echo "<pre>";
-        print_r($_POST);
-        print_r($_FILES);
-        echo "</pre>";
 
+        if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != ""){ //check file in
+
+            $filename = $_FILES['file']['name'];
+            move_uploaded_file($_FILES['file']['tmp_name'], "uploads/". $filename );
+
+        }else{
+                echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+				echo "<br>The following errors occured:<br><br>";
+				echo "Please add a valid image !";
+				echo "</div>";
+        }
+       
 
     }
 
@@ -38,7 +46,7 @@
 		#blue_bar{
 
 			height: 50px;
-			background-color: #405d9b;
+			background-color: rgb(51, 168, 255);;
 			color: #d9dfeb;
 
 		}
@@ -62,13 +70,13 @@
 		#post_button{
 
 			float: right;
-			background-color: #405d9b;
+			background-color: rgb(51, 168, 255);
 			border:none;
 			color: white;
 			padding: 4px;
 			font-size: 14px;
 			border-radius: 2px;
-			width: 50px;
+			width: 80px;
 			cursor: pointer;
 		}
  
@@ -111,7 +119,8 @@
                         <div style="border:solid thin #aaa; padding: 10px;background-color: white;">
 
                                 <input type="file" name="file">
-                                <input id="post_button" type="submit" value="Post">
+                                
+                                <input id="post_button" type="submit" value="Change">
                                 <br>
                             
                         </div>
