@@ -165,16 +165,9 @@
 <body style="font-family: tahoma; background-color: #d0d8e4;">
 	<!--top bar-->
 	<br>
-	<div id="blue_bar">
-		<div style="width: 800px; margin: auto; font-size: 30px;">
-			Readbook  &nbsp &nbsp
-			<input type="text" placeholder="Search for people" id="search_box" >	
-			<img src="profilepic.jpg" style="width: 60px;height:50px; float: right;">  
-			<a href="logout.php">
-			<span style="font-size: 20px;float:right;margin:8px;color:white;">Logout</span>
-			</a>
-		</div>
-	</div>		
+	<?php
+	include("header.php");
+	?>
 
 	<!--Cover Area-->
 	<br>
