@@ -20,21 +20,44 @@
 
         if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != ""){ //check file in
 
-            $filename =  "uploads/". $_FILES['file']['name'];
-            move_uploaded_file($_FILES['file']['tmp_name'], $filename );
+            if($_FILES['file']['type'] == "image/jpeg"){
 
-            if(file_exists($filename)){
-                //echo "umal";
-                $userid = $user_data['userid'];
-                //print_r($userid);
-                $query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
-                $DB = new Database();
-                $DB->save($query);
+                $allowed_size = (1024 * 1024)* 3;
 
-                header(("Location: profile.php"));
-                die;
+                if ($_FILES['file']['size'] < $allowed_size) {
 
+                    $filename =  "uploads/". $_FILES['file']['name'];
+                    move_uploaded_file($_FILES['file']['tmp_name'], $filename );
+        
+                    if(file_exists($filename)){
+                        //echo "umal";
+                        $userid = $user_data['userid'];
+                        //print_r($userid);
+                        $query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
+                        $DB = new Database();
+                        $DB->save($query);
+        
+                        header(("Location: profile.php"));
+                        die;
+        
+                    }
+
+                    # code...
+                }else{
+                    echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+                    echo "<br>The following errors occured:<br><br>";
+                    echo "Only images of size 3MB or lower are allowed";
+                    echo "</div>";
+                }
+                 
+            }else{
+                echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+				echo "<br>The following errors occured:<br><br>";
+				echo "Only image type is jpeg support please upload valid format!";
+				echo "</div>";
             }
+
+           
 
         }else{
                 echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
