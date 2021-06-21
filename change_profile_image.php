@@ -10,6 +10,7 @@
     include("classes/login.php");
     include("classes/user.php");
     include("classes/post.php");
+    include("classes/image.php");
 
     $login = new Login();
 	$user_data = $login->check_login($_SESSION['readbook_userid']);
@@ -28,6 +29,9 @@
 
                     $filename =  "uploads/". $_FILES['file']['name'];
                     move_uploaded_file($_FILES['file']['tmp_name'], $filename );
+
+                    $image = new Image();
+                    $image->crop_image($filename,$filename,800,800);
         
                     if(file_exists($filename)){
                         //echo "umal";
