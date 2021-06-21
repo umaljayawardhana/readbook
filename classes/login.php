@@ -26,29 +26,26 @@ class Login
 
 				//create session data
 				$_SESSION['readbook_userid'] = $row['userid'];
-				
 
 			}else
 			{
 				$this->error .= "wrong email or password<br>";
-				print_r($row['password']);
 			}
 		}else
 		{
 
 			$this->error .= "wrong email or password<br>";
-			
 		}
 
 		return $this->error;
 		
 	}
 
-	private function hash_text($text){
+	/*private function hash_text($text){
 
 		$text = hash("sha1", $text);
 		return $text;
-	}
+	}*/
 
 	public function check_login($id,$redirect = true)
 	{

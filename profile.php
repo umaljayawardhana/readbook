@@ -12,38 +12,9 @@
 	include("classes/user.php");
 	include("classes/post.php");
 
-	//check if user is logged in
-	if(isset($_SESSION['readbook_userid']) && is_numeric($_SESSION['readbook_userid']) ){
 
-		$id = $_SESSION['readbook_userid'];
-		$login = new Login();
-		$result = $login->check_login($id);
-		//print_r($result);
-
-		if($result){
-
-			//retrive user data
-			$user = new User();
-			$user_data = $user->get_data($id);
-			//echo "everythin is fine";
-
-			if(!$user_data){
-				header("Location: login.php");
-				die;
-			}
-
-		}else{
-			header("Location: login.php");
-			//print_r($result);
-			die;
-		}
-		
-		
-	}else {
-		header("Location: login.php");
-			die;
-	}
-			
+	$login = new Login();
+	$user_data = $login->check_login($_SESSION['readbook_userid']);
 
 	//for posting starts here 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -194,16 +165,9 @@
 <body style="font-family: tahoma; background-color: #d0d8e4;">
 	<!--top bar-->
 	<br>
-	<div id="blue_bar">
-		<div style="width: 800px; margin: auto; font-size: 30px;">
-			Readbook  &nbsp &nbsp
-			<input type="text" placeholder="Search for people" id="search_box" >	
-			<img src="profilepic.jpg" style="width: 60px;height:50px; float: right;">  
-			<a href="logout.php">
-			<span style="font-size: 20px;float:right;margin:8px;color:white;">Logout</span>
-			</a>
-		</div>
-	</div>		
+	<?php
+	include("header.php");
+	?>
 
 	<!--Cover Area-->
 	<br>
@@ -211,11 +175,24 @@
 		
 		<div style="background-color: white; text-align: center; font-size: 15px; color:  rgb(51, 168, 255)">
 			<img src="coverPhoto.jpg" style="width: 100%;">
-			<img id="profile_pic" src="profilepic.jpg"> 
+			<span style="font-size: 12px;">
+
+				<?php
+
+					$image = "";
+					if(file_exists($user_data['profile_image'])){
+						$image = $user_data['profile_image'];
+					}
+				?>	
+
+			 <img id="profile_pic" src="<?php echo $image?>"> </br>
+
+			 <a style="text-decoration: none; color:#f0f ;" href="change_profile_image.php"> Change Image </a>
+			 </span>
 			<br>
 			<div style="font-size:25px"> <?php echo $user_data['first_name']. " ". $user_data['last_name'] ?>  </div>
 			<br>
-			 <div id="menu_button">Timeline </div>
+			<a href="index.php"> <div id="menu_button">Timeline </div></a>
 			 <div id="menu_button">About </div>
 			<div id="menu_button"> Friends </div>
 			<div id="menu_button"> Photoes </div>
