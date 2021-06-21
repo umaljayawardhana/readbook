@@ -175,7 +175,10 @@
 		
 		<div style="background-color: white; text-align: center; font-size: 15px; color:  rgb(51, 168, 255)">
 			<img src="coverPhoto.jpg" style="width: 100%;">
-			<img id="profile_pic" src="profilepic.jpg"> 
+			<span style="font-size: 12px;">
+			 <img id="profile_pic" src="profilepic.jpg"> </br>
+			 <a style="text-decoration: none; color:#f0f ;" href="change_profile_image.php"> Change Image </a>
+			 </span>
 			<br>
 			<div style="font-size:25px"> <?php echo $user_data['first_name']. " ". $user_data['last_name'] ?>  </div>
 			<br>
