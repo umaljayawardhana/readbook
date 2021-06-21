@@ -176,7 +176,17 @@
 		<div style="background-color: white; text-align: center; font-size: 15px; color:  rgb(51, 168, 255)">
 			<img src="coverPhoto.jpg" style="width: 100%;">
 			<span style="font-size: 12px;">
-			 <img id="profile_pic" src="profilepic.jpg"> </br>
+
+				<?php
+
+					$image = "";
+					if(file_exists($user_data['profile_image'])){
+						$image = $user_data['profile_image'];
+					}
+				?>	
+
+			 <img id="profile_pic" src="<?php echo $image?>"> </br>
+
 			 <a style="text-decoration: none; color:#f0f ;" href="change_profile_image.php"> Change Image </a>
 			 </span>
 			<br>
