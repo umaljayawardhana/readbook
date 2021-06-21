@@ -12,38 +12,9 @@
 	include("classes/user.php");
 	include("classes/post.php");
 
-	//check if user is logged in
-	if(isset($_SESSION['readbook_userid']) && is_numeric($_SESSION['readbook_userid']) ){
 
-		$id = $_SESSION['readbook_userid'];
-		$login = new Login();
-		$result = $login->check_login($id);
-		//print_r($result);
-
-		if($result){
-
-			//retrive user data
-			$user = new User();
-			$user_data = $user->get_data($id);
-			//echo "everythin is fine";
-
-			if(!$user_data){
-				header("Location: login.php");
-				die;
-			}
-
-		}else{
-			header("Location: login.php");
-			//print_r($result);
-			die;
-		}
-		
-		
-	}else {
-		header("Location: login.php");
-			die;
-	}
-			
+	$login = new Login();
+	$user_data = $login->check_login($_SESSION['readbook_userid']);
 
 	//for posting starts here 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -215,7 +186,7 @@
 			<br>
 			<div style="font-size:25px"> <?php echo $user_data['first_name']. " ". $user_data['last_name'] ?>  </div>
 			<br>
-			 <div id="menu_button">Timeline </div>
+			<a href="index.php"> <div id="menu_button">Timeline </div></a>
 			 <div id="menu_button">About </div>
 			<div id="menu_button"> Friends </div>
 			<div id="menu_button"> Photoes </div>
