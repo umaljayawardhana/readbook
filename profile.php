@@ -174,7 +174,15 @@
 	<div style="width: 800px; margin: auto;  min-height: 400px;">
 		
 		<div style="background-color: white; text-align: center; font-size: 15px; color:  rgb(51, 168, 255)">
-			<img src="coverPhoto.jpg" style="width: 100%;">
+
+			<?php
+
+				$image = "";
+				if(file_exists($user_data['cover_image'])){
+					$image = $user_data['cover_image'];
+				}
+			?>	
+			<img src="<?php echo $image?>" style="width: 100%;">
 			<span style="font-size: 12px;">
 
 				<?php
@@ -187,7 +195,8 @@
 
 			 <img id="profile_pic" src="<?php echo $image?>"> </br>
 
-			 <a style="text-decoration: none; color:#f0f ;" href="change_profile_image.php"> Change Image </a>
+			 <a style="text-decoration: none; color:#f0f ;" href="change_profile_image.php?change=profile"> Change Profile Image </a> |
+			 <a style="text-decoration: none; color:#f0f ;" href="change_profile_image.php?change=cover"> Change Cover </a>
 			 </span>
 			<br>
 			<div style="font-size:25px"> <?php echo $user_data['first_name']. " ". $user_data['last_name'] ?>  </div>
