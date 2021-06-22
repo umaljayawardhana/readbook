@@ -19,11 +19,12 @@
 
 	//for posting starts here 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
+		
 
 		$post = new Post();
 		
 		$id = $_SESSION['readbook_userid'];
-		$result = $post->create_post($id, $_POST);
+		$result = $post->create_post($id, $_POST,$_FILES);
 
 		if($result == ""){
 			header("Location: profile.php");
@@ -32,7 +33,7 @@
 
 		//print_r($_POST);
 		}else{
-				echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+				echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey";
 				echo "<br>The following errors occured:<br><br>";
 				echo $result;
 				echo "</div>";
@@ -255,12 +256,13 @@
 			
 				 <div style="border: solid thin #aaa;  padding: 10px; background-color:  white;">
 
-				 <form method="post">
+				 <form method="post" enctype="multipart/form-data">
 
 			 	 	<textarea name="post"  placeholder="whats on my mind ">  </textarea>
+					<input type="file" name="file">
 		 	 	 	<input type="submit" id="post_button" value="Post">
 		 	 	 	<br>
-				   </form>
+				 </form>
 			 	 	
 			 	
 			 	
