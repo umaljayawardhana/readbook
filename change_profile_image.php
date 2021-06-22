@@ -44,6 +44,7 @@
                     move_uploaded_file($_FILES['file']['tmp_name'], $filename );
 
 					$change = "profile";
+					//check for mode
 
 					if(isset($_GET['change'])){
 						$change = $_GET['change'];
@@ -214,6 +215,21 @@
                                 
                                 <input id="post_button" type="submit" value="Change">
                                 <br>
+		 						<div style="text-align: center;"> 
+								 <br> <br>
+								 <?php
+								 	$change = "profile";
+
+									if(isset($_GET['change']) && $_GET['change'] == "cover" ){
+										$change = $_GET['cover'];
+										echo "<img src='$user_data[cover_image]' style='max-width:500px;'>";
+									}else{
+										echo "<img src='$user_data[profile_image]' style='max-width:500px;'>";
+									}
+									 
+									
+								?>
+								</div>
                             
                         </div>
                     </form>
