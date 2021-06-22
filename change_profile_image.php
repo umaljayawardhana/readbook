@@ -15,6 +15,10 @@
     $login = new Login();
 	$user_data = $login->check_login($_SESSION['readbook_userid']);
 
+	/*echo "<pre>";
+	print_r($_GET);
+	echo "<\pre>";*/
+
     //for posting starts here 
 	if($_SERVER['REQUEST_METHOD'] == "POST"){
 
@@ -30,14 +34,44 @@
                     $filename =  "uploads/". $_FILES['file']['name'];
                     move_uploaded_file($_FILES['file']['tmp_name'], $filename );
 
+					$change = "profile";
+
+					if(isset($_GET['change'])){
+						$change = $_GET['change'];
+					}
+					
+
                     $image = new Image();
-                    $image->crop_image($filename,$filename,800,800);
+
+
+					if($change == "cover")
+					{
+						
+						//$image->crop_image($filename,$filename,2000,500);
+
+					}else{
+
+						$image->crop_image($filename,$filename,800,800);
+						
+					}
+
+
+
         
                     if(file_exists($filename)){
                         //echo "umal";
                         $userid = $user_data['userid'];
+						
+						if($change == "cover")
+						{
+							$query = "update users set cover_image ='$filename' where userid = '$userid' limit 1";
+
+						}else{
+
+							$query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
+						}
+
                         //print_r($userid);
-                        $query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
                         $DB = new Database();
                         $DB->save($query);
         
