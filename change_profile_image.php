@@ -31,7 +31,16 @@
 
                 if ($_FILES['file']['size'] < $allowed_size) {
 
-                    $filename =  "uploads/". $_FILES['file']['name'];
+					//everything is fine
+					$folder =  "uploads/". $user_data['userid'] . "/";
+					//create folder
+					if(!file_exists($folder)){
+						mkdir($folder, 0777,true);
+					}
+
+					$image = new Image();
+
+                    $filename = $folder . $image->generate_filename(15) . ".jpg";
                     move_uploaded_file($_FILES['file']['tmp_name'], $filename );
 
 					$change = "profile";
@@ -41,15 +50,21 @@
 					}
 					
 
-                    $image = new Image();
+                   
 
 
 					if($change == "cover")
 					{
+						if(file_exists($user_data['cover_image'])){
+							unlink($user_data['cover_image']);
+						}
 						
 						$image->crop_image($filename,$filename,1500,500);
 
 					}else{
+						if(file_exists($user_data['profile_image'])){
+							unlink($user_data['profile_image']);
+						}
 
 						$image->crop_image($filename,$filename,800,800);
 						
