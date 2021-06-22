@@ -177,7 +177,7 @@
 
 			<?php
 
-				$image = "";
+				$image = "images/cover_image.jpg";
 				if(file_exists($user_data['cover_image'])){
 					$image = $user_data['cover_image'];
 				}
@@ -187,7 +187,10 @@
 
 				<?php
 
-					$image = "";
+					$image = "images/male.jpg";
+					if($user_data['gender'] == "Female"){
+						$image = "images/female.jpg";
+					}
 					if(file_exists($user_data['profile_image'])){
 						$image = $user_data['profile_image'];
 					}
