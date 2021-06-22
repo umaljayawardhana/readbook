@@ -11,6 +11,7 @@
 	include("classes/login.php");
 	include("classes/user.php");
 	include("classes/post.php");
+	include("classes/image.php");
 
 
 	$login = new Login();
@@ -51,8 +52,7 @@
 	$id = $_SESSION['readbook_userid'];
 	$friends = $user->get_friends($id);
 
-
-
+	$image_class = new Image();
 
 ?>
 
@@ -179,7 +179,7 @@
 
 				$image = "images/cover_image.jpg";
 				if(file_exists($user_data['cover_image'])){
-					$image = $user_data['cover_image'];
+					$image = $image_class->get_thumb_cover($user_data['cover_image']);
 				}
 			?>	
 			<img src="<?php echo $image?>" style="width: 100%;">
@@ -192,7 +192,7 @@
 						$image = "images/female.jpg";
 					}
 					if(file_exists($user_data['profile_image'])){
-						$image = $user_data['profile_image'];
+						$image = $image_class->get_thumb_profile($user_data['profile_image']); 
 					}
 				?>	
 
