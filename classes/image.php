@@ -137,7 +137,7 @@ class Image
 
 	//resize the image
 	public function resize_image($original_file_name,$resized_file_name,$max_width,$max_height)
-	{
+{
 
 		if(file_exists($original_file_name))
 		{
@@ -208,71 +208,68 @@ class Image
 		imagedestroy($new_image);
 	}
 
-		//create thumbnail for cover image
-		public function get_thumb_cover($filename)
+	//create thumbnail for cover image
+	public function get_thumb_cover($filename)
+	{
+
+		$thumbnail = $filename . "_cover_thumb.jpg";
+		if(file_exists($thumbnail))
 		{
-	
-			$thumbnail = $filename . "_cover_thumb.jpg";
-			if(file_exists($thumbnail))
-			{
-				return $thumbnail;
-			}
-	
-			$this->crop_image($filename,$thumbnail,1366,488);
-	
-			if(file_exists($thumbnail))
-			{
-				return $thumbnail;
-			}else
-			{
-				return $filename;
-			}
+			return $thumbnail;
 		}
-	
-		//create thumbnail for profile image
-		public function get_thumb_profile($filename)
+
+		$this->crop_image($filename,$thumbnail,1366,488);
+
+		if(file_exists($thumbnail))
 		{
-	
-			$thumbnail = $filename . "_profile_thumb.jpg";
-			if(file_exists($thumbnail))
-			{
-				return $thumbnail;
-			}
-	
-			$this->crop_image($filename,$thumbnail,600,600);
-	
-			if(file_exists($thumbnail))
-			{
-				return $thumbnail;
-			}else
-			{
-				return $filename;
-			}
-		}
-	
-		//create thumbnail for post image
-		public function get_thumb_post($filename)
+			return $thumbnail;
+		}else
 		{
-	
-			$thumbnail = $filename . "_post_thumb.jpg";
-			if(file_exists($thumbnail))
-			{
-				return $thumbnail;
-			}
-	
-			$this->crop_image($filename,$thumbnail,600,600);
-	
-			if(file_exists($thumbnail))
-			{
-				return $thumbnail;
-			}else
-			{
-				return $filename;
-			}
+			return $filename;
 		}
-	
-	
 	}
 
-?>
+	//create thumbnail for profile image
+	public function get_thumb_profile($filename)
+	{
 
+		$thumbnail = $filename . "_profile_thumb.jpg";
+		if(file_exists($thumbnail))
+		{
+			return $thumbnail;
+		}
+
+		$this->crop_image($filename,$thumbnail,600,600);
+
+		if(file_exists($thumbnail))
+		{
+			return $thumbnail;
+		}else
+		{
+			return $filename;
+		}
+	}
+
+	//create thumbnail for post image
+	public function get_thumb_post($filename)
+	{
+
+		$thumbnail = $filename . "_post_thumb.jpg";
+		if(file_exists($thumbnail))
+		{
+			return $thumbnail;
+		}
+
+		$this->crop_image($filename,$thumbnail,600,600);
+
+		if(file_exists($thumbnail))
+		{
+			return $thumbnail;
+		}else
+		{
+			return $filename;
+		}
+	}
+
+
+}
