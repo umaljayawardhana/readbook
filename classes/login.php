@@ -21,7 +21,7 @@ class Login
 
 			$row = $result[0];
 
-			if(($password) == $row['password'])
+			if($this->hash_text($password) == $row['password'])
 			{
 
 				//create session data
@@ -41,11 +41,11 @@ class Login
 		
 	}
 
-	/*private function hash_text($text){
+	private function hash_text($text){
 
 		$text = hash("sha1", $text);
 		return $text;
-	}*/
+	}
 
 	public function check_login($id,$redirect = true)
 	{
@@ -65,7 +65,7 @@ class Login
 			}else
 			{
 				if($redirect){
-					header("Location: login.php");
+					header("Location: ".ROOT."login");
 					die;
 				}else{
 
@@ -77,7 +77,7 @@ class Login
 		}else
 		{
 			if($redirect){
-				header("Location: login.php");
+				header("Location: ".ROOT."login");
 				die;
 			}else{
 				$_SESSION['readbook_userid'] = 0;
