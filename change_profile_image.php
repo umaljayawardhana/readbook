@@ -1,132 +1,133 @@
-<?php
+<?php 
 
+	session_start();
+	
+	include("classes/connect.php");
+	include("classes/login.php");
+	include("classes/user.php");
+	include("classes/post.php");
+	include("classes/image.php");
 
-    session_start();
-    //unset($_SESSION['readbook_userid']); //logout
-
-    //print_r($_SESSION);
-    //$_SESSION['readbook_userid'] == "";
-    include("classes/connect.php");
-    include("classes/login.php");
-    include("classes/user.php");
-    include("classes/post.php");
-    include("classes/image.php");
-
-    $login = new Login();
+	$login = new Login();
 	$user_data = $login->check_login($_SESSION['readbook_userid']);
+ 
+	//posting starts here
+	if($_SERVER['REQUEST_METHOD'] == "POST")
+	{
+ 
+		if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != "")
+		{
+ 
+			if($_FILES['file']['type'] == "image/jpeg")
+			{
 
-	/*echo "<pre>";
-	print_r($_GET);
-	echo "<\pre>";*/
-
-    //for posting starts here 
-	if($_SERVER['REQUEST_METHOD'] == "POST"){
-
-
-        if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != ""){ //check file in
-
-            if($_FILES['file']['type'] == "image/jpeg"){
-
-                $allowed_size = (1024 * 1024)* 3;
-
-                if ($_FILES['file']['size'] < $allowed_size) {
-
+				$allowed_size = (1024 * 1024) * 7;
+				if($_FILES['file']['size'] < $allowed_size)
+				{
 					//everything is fine
-					$folder =  "uploads/". $user_data['userid'] . "/";
+					$folder = "uploads/" . $user_data['userid'] . "/";
+
 					//create folder
-					if(!file_exists($folder)){
-						mkdir($folder, 0777,true);
+					if(!file_exists($folder))
+					{
+
+						mkdir($folder,0777,true);
 					}
 
 					$image = new Image();
 
-                    $filename = $folder . $image->generate_filename(15) . ".jpg";
-                    move_uploaded_file($_FILES['file']['tmp_name'], $filename );
+					$filename = $folder . $image->generate_filename(15) . ".jpg";
+					move_uploaded_file($_FILES['file']['tmp_name'], $filename);
 
 					$change = "profile";
-					//check for mode
 
-					if(isset($_GET['change'])){
-						$change = $_GET['change'];
-					}
+						//check for mode
+						if(isset($_GET['change']))
+						{
+
+							$change = $_GET['change'];
+						}
+
 					
-
-                   
-
 
 					if($change == "cover")
 					{
-						if(file_exists($user_data['cover_image'])){
+						if(file_exists($user_data['cover_image']))
+						{
 							unlink($user_data['cover_image']);
 						}
-						
-						$image->crop_image($filename,$filename,1500,500);
-
-					}else{
-						if(file_exists($user_data['profile_image'])){
+						$image->resize_image($filename,$filename,1500,1500);
+					}else
+					{
+						if(file_exists($user_data['profile_image']))
+						{
 							unlink($user_data['profile_image']);
 						}
+						$image->resize_image($filename,$filename,1500,1500);
+					}
 
-						$image->crop_image($filename,$filename,800,800);
-						
+					if(file_exists($filename))
+					{
+
+						$userid = $user_data['userid'];
+
+						if($change == "cover")
+						{
+							$query = "update users set cover_image = '$filename' where userid = '$userid' limit 1";
+							$_POST['is_cover_image'] = 1;
+
+						}else
+						{
+							$query = "update users set profile_image = '$filename' where userid = '$userid' limit 1";
+							$_POST['is_profile_image'] = 1;
+
+						}
+
+						$DB = new Database();
+						$DB->save($query);
+
+
+						//create a post
+						$post = new Post();
+
+						$post->create_post($userid, $_POST,$filename);
+
+						header(("Location: profile.php"));
+						die;
 					}
 
 
+				}else
+				{
 
-        
-                    if(file_exists($filename)){
-                        //echo "umal";
-                        $userid = $user_data['userid'];
-						
-						if($change == "cover")
-						{
-							$query = "update users set cover_image ='$filename' where userid = '$userid' limit 1";
+					echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+					echo "<br>The following errors occured:<br><br>";
+					echo "Only images of size 3Mb or lower are allowed!";
+					echo "</div>";
 
-						}else{
+				}
+			}else
+			{
 
-							$query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
-						}
-
-                        //print_r($userid);
-                        $DB = new Database();
-                        $DB->save($query);
-        
-                        header(("Location: profile.php"));
-                        die;
-        
-                    }
-
-                    # code...
-                }else{
-                    echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
-                    echo "<br>The following errors occured:<br><br>";
-                    echo "Only images of size 3MB or lower are allowed";
-                    echo "</div>";
-                }
-                 
-            }else{
-                echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+				echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
 				echo "<br>The following errors occured:<br><br>";
-				echo "Only image type is jpeg support please upload valid format!";
+				echo "Only images of Jpeg type are allowed!";
 				echo "</div>";
-            }
 
-           
+			}
 
-        }else{
-                echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
-				echo "<br>The following errors occured:<br><br>";
-				echo "Please add a valid image !";
-				echo "</div>";
-        }
-       
-
-    }
-
-    $login = new Login();
-    $user_data = $login->check_login($_SESSION['readbook_userid']);
+		}else
+		{
+			echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+			echo "<br>The following errors occured:<br><br>";
+			echo "please add a valid image!";
+			echo "</div>";
+		}
+		
+	}
 
 ?>
+
 
 <!DOCTYPE html>
 	<html>
@@ -218,18 +219,22 @@
 		 						<div style="text-align: center;"> 
 								 <br> <br>
 								 <?php
-								 	$change = "profile";
 
-									if(isset($_GET['change']) && $_GET['change'] == "cover" ){
-										$change = $_GET['cover'];
-										echo "<img src='$user_data[cover_image]' style='max-width:500px;'>";
-									}else{
-										echo "<img src='$user_data[profile_image]' style='max-width:500px;'>";
+									//check for mode
+									if(isset($_GET['change']) && $_GET['change'] == "cover")
+									{
+
+									$change = "cover";
+										echo "<img src='$user_data[cover_image]' style='max-width:500px;' >";
+									}else
+									{
+									echo "<img src='$user_data[profile_image]' style='max-width:500px;' >";
 									}
-									 
-									
+
+
 								?>
-								</div>
+							</div>
+								
                             
                         </div>
                     </form>
