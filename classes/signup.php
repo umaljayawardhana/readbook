@@ -1,27 +1,30 @@
-<?php
+<?php 
 
- 
+class Signup
+{
 
-class Signup{
-     
-    private $error = "";
+	private $error = "";
 
-    public function evaluate($data){ //data came from signup.php _post array
+	public function evaluate($data)
+	{
 
-        foreach ($data as $key => $value) { //check data is empty or not
-            
-            if(empty($value)){
+		foreach ($data as $key => $value) {
+			# code...
 
-                $this->error = $this->error . $key . "is empty ! <br>";
-            }
+			if(empty($value))
+			{
+				$this->error = $this->error . $key . " is empty!<br>";
+			}
 
-            if($key == "email"){
-                if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$value)) {
-                    $this->error = $this->error . "invalid email address!<br>";
-                }
-            }
+			if($key == "email")
+			{
+				if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$value)) {
+        
+ 					$this->error = $this->error . "invalid email address!<br>";
+    			}
+			}
 
-            if($key == "first_name")
+			if($key == "first_name")
 			{
 				if (is_numeric($value)) {
         
@@ -48,58 +51,95 @@ class Signup{
     			}
 
 			}
+  
+			
+		}
+
+		$DB = new Database();
+
+		//check tag name
+		$data['tag_name'] = strtolower($data['first_name'] . $data['last_name']);
+
+		$sql = "select id from users where tag_name = '$data[tag_name]' limit 1";
+		$check = $DB->read($sql);
+		while(is_array($check)){
+
+			$data['tag_name'] = strtolower($data['first_name'] . $data['last_name']) . rand(0,9999);
+			$sql = "select id from users where tag_name = '$data[tag_name]' limit 1";
+			$check = $DB->read($sql);
+		}
+
+		$data['userid'] = $this->create_userid();
+		//check userid
+		$sql = "select id from users where userid = '$data[userid]' limit 1";
+		$check = $DB->read($sql);
+		while(is_array($check)){
+
+			$data['userid'] = $this->create_userid();
+			$sql = "select id from users where userid = '$data[userid]' limit 1";
+			$check = $DB->read($sql);
+		}
+
+		//check email
+		$sql = "select id from users where email = '$data[email]' limit 1";
+		$check = $DB->read($sql);
+		if(is_array($check)){
+
+			 $this->error = $this->error . "Another user is already using that email<br>";
+		}
+ 
+
+		if($this->error == "")
+		{
+
+			//no error
+			$this->create_user($data);
+		}else
+		{
+			return $this->error;
+		}
+	}
+
+	public function create_user($data)
+	{
+
+		$first_name = ucfirst($data['first_name']);
+		$last_name = ucfirst($data['last_name']);
+		$gender = $data['gender'];
+		$email = $data['email'];
+		$password = $data['password'];
+		$userid = $data['userid'];
+		$tag_name = $data['tag_name'];
+		$date = date("Y-m-d H:i:s");
+		$type = "profile";
+
+		$password = hash("sha1", $password);
+		
+		//create these
+		$url_address = strtolower($first_name) . "." . strtolower($last_name);
+
+		$query = "insert into users 
+		(type,userid,first_name,last_name,gender,email,password,url_address,tag_name,date) 
+		values 
+		('$type','$userid','$first_name','$last_name','$gender','$email','$password','$url_address','$tag_name','$date')";
 
 
-        }
+		$DB = new Database();
+		$DB->save($query);
+	}
+ 
+	private function create_userid()
+	{
 
-        if($this->error == ""){ //data become a no errors 
-            //no error
-            $this->create_user($data); // run this function
+		$length = rand(4,19);
+		$number = "";
+		for ($i=0; $i < $length; $i++) { 
+			# code...
+			$new_rand = rand(0,9);
 
-        }else {
-            return $this->error;
-        }
+			$number = $number . $new_rand;
+		}
 
-    }
-
-    public function create_user($data){
-        //get data from $data arry "_POST and assign values and keys
-
-        $first_name =ucfirst($data['first_name']);
-        $last_name =ucfirst($data['last_name']);
-        $gender =$data['gender'];
-        $email =$data['email'];
-        $password = $data['password'];
-
-        //ceate these 
-        $url_address =strtolower($first_name) . "." .strtolower($last_name); //convert all to lowercase
-        $userid =$this->create_userid(); // run user id function to make random numbers (random user id algo)
-
-
-
-
-        $query ="INSERT INTO users (userid,first_name,last_name,gender,email,password,url_address)
-        VALUES ('$userid','$first_name','$last_name','$gender','$email','$password','$url_address')";
-
-        //connect with database use to connect.php connecion class and save data to DB
-        $DB = new Database();
-        $DB->save($query);
-    }
-
-   
-    private function create_userid(){
-
-        $length = rand(4,19);
-        $number = "";
-        for ($i=0; $i <$length ; $i++) { 
-            $new_rand = rand(0,9);
-            $number = $number . $new_rand;
-        }
-        return $number; 
-    }
-
+		return $number;
+	}
 }
-
-
-
-?>  
