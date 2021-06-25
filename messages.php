@@ -285,7 +285,7 @@
 								 		}else
 								 		if(isset($URL[1]) && $URL[1] == "new"){
 
-	  										echo "Start New Message<br><br>";
+	  										echo "Start New Message with:<br><br>"; 
 	  										if(isset($URL[2]) && is_numeric($URL[2])){
 	  											
 	  											$user = new User();
