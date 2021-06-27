@@ -8,23 +8,14 @@
 
 	if($notif_row['content_type'] == "post"){
 
-		$link = ROOT . "single_post/" . $notif_row['contentid'] . "/" . $notif_row['id'];
+		$link = "single_post.php?id=" . $notif_row['contentid'] . "&notif=" . $notif_row['id'];
 	}else
 	if($notif_row['content_type'] == "profile"){
 
-		$link = ROOT . "profile/" . $notif_row['userid'] . "/" . $notif_row['id'];
-	}else
-	if($notif_row['content_type'] == "comment"){
+		$link = "profile.php?id=" . $notif_row['userid'] . "&notif=" . $notif_row['id'];
+	}if($notif_row['content_type'] == "comment"){
 
-		$link = ROOT . "single_post/" . $notif_row['contentid'] . "/" . $notif_row['id'];
-	}else
-	if($notif_row['content_type'] == "group" && $notif_row['activity'] == "role"){
-
-		$link = ROOT . "group/" . $notif_row['contentid'] . "/members/" . $notif_row['id'];
-	}else
-	if($notif_row['content_type'] == "group" && $notif_row['activity'] == "invite"){
-
-		$link = ROOT . "group/" . $notif_row['contentid'] . "/invited/" . $notif_row['id'];
+		$link = "single_post.php?id=" . $notif_row['contentid'] . "&notif=" . $notif_row['id'];
 	}
 
 	//check if the notification was seen
@@ -55,7 +46,7 @@
 					$image = $image_class->get_thumb_profile($actor['profile_image']);
 				}
 
-				echo "<img src='".ROOT."$image' style='width:36px;margin:4px;float:left;' />";
+				echo "<img src='$image' style='width:36px;margin:4px;float:left;' />";
 
 				if($actor['userid'] != $id){
 					echo $actor['first_name'] . " " . $actor['last_name'];
@@ -74,12 +65,6 @@
 				}else
 				if($notif_row['activity'] == "tag"){
 					echo " tagged ";
-				}else
-				if($notif_row['activity'] == "role"){
-					echo " changed your access to ";
-				}else
-				if($notif_row['activity'] == "invite"){
-					echo " invited you to ";
 				}
 
 
@@ -89,13 +74,7 @@
 				}elseif($notif_row['activity'] == "tag"){
 					echo " you in a ";
 				}else{
-
-					if($notif_row['activity'] == "invite" || $notif_row['activity'] == "role"){
-						echo " a ";
-					}else{
- 						echo " your ";
-					}
- 					
+ 					echo " your ";
 				}
 				
  				$content_row = $Post->get_one_post($notif_row['contentid']);
@@ -108,7 +87,7 @@
 						if(file_exists($content_row['image']))
 						{
 
-							$post_image = ROOT . $image_class->get_thumb_post($content_row['image']);
+							$post_image = $image_class->get_thumb_post($content_row['image']);
 
 							echo "<img src='$post_image' style='width:40px;float:right;' />";
 						}
