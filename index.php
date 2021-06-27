@@ -1,26 +1,53 @@
-<?php
+<?php 
 
+	include("classes/autoload.php");
+ 
 
-    session_start();
-    //unset($_SESSION['readbook_userid']); //logout
+	$login = new Login();
+	$user_data = $login->check_login($_SESSION['readbook_userid']);
+ 
+ 	$USER = $user_data;
+ 	
+ 	if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
-    //print_r($_SESSION);
-    //$_SESSION['readbook_userid'] == "";
-    include("classes/connect.php");
-    include("classes/login.php");
-    include("classes/user.php");
-    include("classes/post.php");
+	 	$profile = new Profile();
+	 	$profile_data = $profile->get_profile($_GET['id']);
 
+	 	if(is_array($profile_data)){
+	 		$user_data = $profile_data[0];
+	 	}
 
-    $login = new Login();
-    $user_data = $login->check_login($_SESSION['readbook_userid']);
+ 	}
+
+  
+	//posting starts here
+	if($_SERVER['REQUEST_METHOD'] == "POST")
+	{
+
+		$post = new Post();
+		$id = $_SESSION['readbook_userid'];
+		$result = $post->create_post($id, $_POST,$_FILES);
+		
+		if($result == "")
+		{
+			header("Location: index.php");
+			die;
+		}else
+		{
+
+			echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
+			echo "<br>The following errors occured:<br><br>";
+			echo $result;
+			echo "</div>";
+		}
+	}
 
 ?>
 
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>Profile | ReadBook</title>
+		<title>Profile | Readbook</title>
 	</head>
 
 	<style type="text/css">
@@ -28,7 +55,7 @@
 		#blue_bar{
 
 			height: 50px;
-			background-color:rgb(51, 168, 255);;
+			background-color: rgb(51, 168, 255);
 			color: #d9dfeb;
 
 		}
@@ -76,7 +103,7 @@
 			padding: 8px;
 			text-align: center;
 			font-size: 20px;
-			color: #405d9b;
+			color: rgb(51, 168, 255);
 		}
 
 		#friends{
@@ -84,7 +111,7 @@
 		 	clear: both;
 		 	font-size: 12px;
 		 	font-weight: bold;
-		 	color: #405d9b;
+		 	color: rgb(51, 168, 255);
 		}
 
 		textarea{
@@ -100,7 +127,7 @@
 		#post_button{
 
 			float: right;
-			background-color:rgb(51, 168, 255);
+			background-color: rgb(51, 168, 255);
 			border:none;
 			color: white;
 			padding: 4px;
@@ -184,7 +211,7 @@
 	 				<!--posts-->
 	 				<div id="post_bar">
  					
- 					<?php /*
+ 						<?php 
 
  							$page_number = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   							$page_number = ($page_number < 1) ? 1 : $page_number;
@@ -229,9 +256,7 @@
  	 					 	//get current url
  							$pg = pagination_link();
  
-	 					 */
-                          ?>
-                          
+	 					 ?>
 	 					 <a href="<?= $pg['next_page'] ?>">
 	 					 <input id="post_button" type="button" value="Next Page" style="float: right;width:150px;">
 	 					 </a>
@@ -247,3 +272,4 @@
 
 	</body>
 </html>
+?>
