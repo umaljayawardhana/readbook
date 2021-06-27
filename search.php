@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>People who like | readbook</title>
+		<title>People who like | Readbook</title>
 	</head>
 
 	<style type="text/css">
@@ -153,12 +153,7 @@
   					 			foreach ($results as $row) {
   					 				# code...
   					 				$FRIEND_ROW = $User->get_user($row['userid']);
- 									
- 									if($row['type'] == "profile"){
- 										include("user.php");
- 									}elseif($row['type'] == "group"){
- 										include("group.inc.php");
- 									}
+ 									include("user.php");
  					 			}
   					 		}else{
 
@@ -177,3 +172,4 @@
 		</div>
 
 	</body>
+</html>
