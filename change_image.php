@@ -1,16 +1,6 @@
-<?php 
+<?php
 
-if(isset($URL[2]) && isset($URL[2]) == "cover" && count($_FILES) > 0 && isset($group_data))
-{
-	$URL[1] = "cover";
-}
-
-if(isset($group_data)){
-
-	$user_data = $group_data;
-}
-
-if(isset($URL[1]) && ($URL[1] == "profile" || $URL[1] == "cover"))
+if(isset($_GET['change']) && ($_GET['change'] == "profile" || $_GET['change'] == "cover"))
 {
 
 		if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != "")
@@ -40,10 +30,10 @@ if(isset($URL[1]) && ($URL[1] == "profile" || $URL[1] == "cover"))
 					$change = "profile";
 
 						//check for mode
-						if(isset($URL[1]))
+						if(isset($_GET['change']))
 						{
 
-							$change = $URL[1];
+							$change = $_GET['change'];
 						}
 
 					
@@ -68,9 +58,6 @@ if(isset($URL[1]) && ($URL[1] == "profile" || $URL[1] == "cover"))
 					{
 
 						$userid = $user_data['userid'];
-						if(isset($group_data)){
-							$userid = $group_data['userid'];
-						}
 
 						if($change == "cover")
 						{
@@ -91,14 +78,9 @@ if(isset($URL[1]) && ($URL[1] == "profile" || $URL[1] == "cover"))
 						//create a post
 						$post = new Post();
 
-						if(isset($group_data)){
-							$post->create_post($userid, $_POST,$filename,$group_data['userid']);
-							header(("Location: ".ROOT."group/". $group_data['userid']));
-						}else{
-							$post->create_post($userid, $_POST,$filename);
-							header(("Location: ".ROOT."profile"));
-						}
-						
+						$post->create_post($userid, $_POST,$filename);
+
+						header(("Location: profile.php"));
 						die;
 					}
 
