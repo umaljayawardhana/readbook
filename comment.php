@@ -17,12 +17,12 @@
   
 			?>
 
-			<img src="<?php echo ROOT . $image ?>" style="width: 75px;margin-right: 4px;border-radius: 50%;">
+			<img src="<?php echo $image ?>" style="width: 75px;margin-right: 4px;border-radius: 50%;">
 		</div>
 		<div style="width: 100%;">
-			<div style="font-weight: bold;color: rgb(51, 168, 255);width: 100%;">
+			<div style="font-weight: bold;color:rgb(51, 168, 255);width: 100%;">
 				<?php 
-					echo "<a href='".ROOT."profile/$COMMENT[userid]'>";
+					echo "<a href='profile.php?id=$COMMENT[userid]'>";
 					echo htmlspecialchars($ROW_USER['first_name']) . " " . htmlspecialchars($ROW_USER['last_name']); 
 					echo "</a>";
 
@@ -61,7 +61,7 @@
 				if(file_exists($COMMENT['image']))
 				{
 
-					$post_image = ROOT . $image_class->get_thumb_post($COMMENT['image']);
+					$post_image = $image_class->get_thumb_post($COMMENT['image']);
 
 					echo "<img src='$post_image' style='width:80%;' />";
 				}
@@ -75,7 +75,7 @@
 			$likes = ($COMMENT['likes'] > 0) ? "(" .$COMMENT['likes']. ")" : "" ;
 
 		?>
-		<a href="<?=ROOT?>like/post/<?php echo $COMMENT['postid'] ?>">Like<?php echo $likes ?></a> . 
+		<a href="like.php?type=post&id=<?php echo $COMMENT['postid'] ?>">Like<?php echo $likes ?></a> . 
 
  
 		<span style="color: #999;">
@@ -88,7 +88,7 @@
 
 			if($COMMENT['has_image']){
 
-				echo "<a href='".ROOT."image_view/$COMMENT[postid]' >";
+				echo "<a href='image_view.php?id=$COMMENT[postid]' >";
 				echo ". View Full Image . ";
 				echo "</a>";
 			}
@@ -103,7 +103,7 @@
 				if($post->i_own_post($COMMENT['postid'],$_SESSION['readbook_userid'])){
 
 					echo "
-					<a href='".ROOT."edit/$COMMENT[postid]'>
+					<a href='edit.php?id=$COMMENT[postid]'>
 		 				Edit
 					</a> . ";
 
@@ -112,7 +112,7 @@
 
 				if(i_own_content($COMMENT)){
 
-					echo "<a href='".ROOT."delete/$COMMENT[postid]' >
+					echo "<a href='delete.php?id=$COMMENT[postid]' >
 		 				Delete
 					</a>";
 				}
@@ -147,7 +147,7 @@
 			 	if($COMMENT['likes'] > 0){
 
 			 		echo "<br/>";
-			 		echo "<a href='".ROOT."likes/post/$COMMENT[postid]'>";
+			 		echo "<a href='likes.php?type=post&id=$COMMENT[postid]'>";
 
 			 		if($COMMENT['likes'] == 1){
 
