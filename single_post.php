@@ -7,10 +7,10 @@
  
  	$USER = $user_data;
  	
- 	if(isset($URL[1]) && is_numeric($URL[1])){
+ 	if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 	 	$profile = new Profile();
-	 	$profile_data = $profile->get_profile($URL[1]);
+	 	$profile_data = $profile->get_profile($_GET['id']);
 
 	 	if(is_array($profile_data)){
 	 		$user_data = $profile_data[0];
@@ -28,7 +28,7 @@
 			
 			if($result == "")
 			{
-				header("Location: ". ROOT."single_post/$URL[1]");
+				header("Location: single_post.php?id=$_GET[id]");
 				die;
 			}else
 			{
@@ -44,32 +44,21 @@
 	$Post = new Post();
 	$ROW = false;
 
-	$is_group_post = false;
-
 	$ERROR = "";
-	if(isset($URL[1])){
+	if(isset($_GET['id'])){
 
-		$ROW = $Post->get_one_post($URL[1]);
-		if($ROW['owner'] > 0){
-
-			$user_class = new User();
-			$group_data = $user_class->get_user($ROW['owner']);
-			if($group_data['type'] == "group"){
-				$is_group_post = true;
-			}
-		}
+		$ROW = $Post->get_one_post($_GET['id']);
 	}else{
 
 		$ERROR = "No post was found!";
 	}
-
  
 ?>
 
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>Single Post | readbook</title>
+		<title>Single Post | Readbook</title>
 	</head>
 
 	<style type="text/css">
@@ -180,9 +169,7 @@
 		<br>
 		<?php include("header.php"); ?>
 
-		<!--post area-->
-	<?php if(!($is_group_post && $group_data['group_type'] == 'private' && !group_access($_SESSION['readbook_userid'],$group_data,'member'))): ?>
-		
+		<!--cover area-->
 		<div style="width: 800px;margin:auto;min-height: 400px;">
 		 
 			<!--below cover area-->
@@ -195,8 +182,8 @@
 
   					 <?php 
   					 		//check if this is from a notification
-  					 		if(isset($URL[2])){
-  					 			notification_seen($URL[2]);
+  					 		if(isset($_GET['notif'])){
+  					 			notification_seen($_GET['notif']);
   					 		}
 
   					 		$user = new User();
@@ -219,9 +206,7 @@
 
 	  					 <br style="clear: both;">
 
-						<?php if(!($is_group_post && $group_data['group_type'] == 'public' && !group_access($_SESSION['readbook_userid'],$group_data,'member'))): ?>
-
-	  					<div style="border:solid thin #aaa; padding: 10px;background-color: white;">
+	  					 <div style="border:solid thin #aaa; padding: 10px;background-color: white;">
 
 	 						<form method="post" enctype="multipart/form-data">
 
@@ -232,10 +217,9 @@
 		 						<br>
 	 						</form>
 	 					</div>
- 					 	<?php endif; ?>
 
  					 <?php else: ?>
- 					 	<a href="<?=ROOT?>single_post/<?php echo $ROW['parent'] ?>" >
+ 					 	<a href="single_post.php?id=<?php echo $ROW['parent'] ?>" >
  					 		<input id="post_button" style="width:auto;float: left;cursor: pointer;" type="button" value="Back to main post" />
  					 	</a>
  					 <?php endif; ?>
@@ -274,9 +258,6 @@
 			</div>
 
 		</div>
-		<!-- end post -->
-	<?php else: ?>
-		<div style="padding: 1em;text-align: center;background-color: white;">Sorry, you do not have access to this content!</div>
-	<?php endif; ?>
+
 	</body>
 </html>
