@@ -1,4 +1,4 @@
-<?php 
+<?php  /*
 
 class Group
 {
@@ -414,4 +414,6 @@ class Group
 
 	}
 
-}
+} */
+
+?>

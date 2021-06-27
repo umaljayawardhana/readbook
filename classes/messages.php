@@ -1,4 +1,4 @@
-<?php 
+<?php  /*
 
 Class Messages
 {
@@ -240,4 +240,6 @@ Class Messages
 		return $text;
 	}
 
-}
+} */
+
+?>

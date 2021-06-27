@@ -9,8 +9,7 @@ function pagination_link(){
 	$arr['prev_page'] = "";
 
 	//get current url
-	//$url = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'];
-	$url = ROOT . $_GET['url'];
+	$url = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'];
 	$url .= "?";
 
 	$next_page_link = $url;
@@ -20,11 +19,6 @@ function pagination_link(){
 	$num = 0;
 	foreach ($_GET as $key => $value) {
 		# code...
-		if($key == 'url')
-		{
-			continue;
-		}
-		
 		$num++;
 		
 		if($num == 1){
@@ -68,21 +62,8 @@ function pagination_link(){
 function i_own_content($row){
 
 	$myid = $_SESSION['readbook_userid'];
-	
 	//profiles
-	if(isset($row['gender']) && $row['type'] == "profile" && $myid == $row['userid']){
-
-		return true;
-	}
-
-	//groups
-	if(isset($row['gender']) && $row['type'] == "group" && $myid == $row['owner']){
-
-		return true;
-	}
-
-	//messages
-	if(isset($row['sender']) && $myid == $row['sender']){
+	if(isset($row['gender']) && $myid == $row['userid']){
 
 		return true;
 	}
@@ -100,27 +81,6 @@ function i_own_content($row){
 			if($myid == $one_post['userid']){
 				return true;
 			}
-
-			//groups posts moderator or added admin
-			$DB = new Database();
-			$groupid = $one_post['owner'];
-
-			$sql = "select * from group_members where (role = 'admin' || role = 'moderator') && groupid = '$groupid' limit 1";
-			$check = $DB->read($sql);
-
-			if(is_array($check)){
-				return true;
-			}
-
-			//group owner
-			$groupid = $row['userid'];
-			$sql = "select * from users where owner = '$myid' && userid = '$groupid'  limit 1";
-			$check = $DB->read($sql);
-
-			if(is_array($check)){
-				return true;
-			}
-
 
 		}
 	}
@@ -194,12 +154,8 @@ function add_notification($userid,$activity,$row,$tagged_user = '')
 	}
 	
 	if(isset($row->gender)){
-		$content_type = $row->type;
+		$content_type = "profile";
 		$contentid = $row->userid;
-
-		if($content_type == "group"){
-			$content_owner = $row->owner;
-		}
 	}
 
 	$query = "insert into notifications (userid,activity,content_owner,date,contentid,content_type) 
@@ -328,7 +284,7 @@ function check_tags($text)
 
 				if(is_array($user_row)){
 					$user_row = $user_row[0];
-					$str .= "<a href='".ROOT."profile/$user_row[userid]'>@" . $word . "</a> ";
+					$str .= "<a href='profile.php?id=$user_row[userid]'>@" . $word . "</a> ";
 				}else{
 
 					$str .= htmlspecialchars($word) . " ";
@@ -377,144 +333,4 @@ function get_tags($text)
 	}
  
 	return $tags;
-}
-
-
-if(isset($_SESSION['readbook_userid'])){
-	set_online($_SESSION['readbook_userid']);
-}
-
-function set_online($id){
-
-	if(!is_numeric($id)){
-		return;
-	}
-
-	$online = time();
-	$query = "update users set online = '$online' where userid = '$id' limit 1";
-	$DB = new Database();
-	$DB->save($query);
-
-}
-
-function show($data){
-
-	echo "<pre>";
-	print_r($data);
-	echo "</pre>";
-}
-
-$URL = split_url2();
-function split_url2()
-{
-	$url = isset($_GET['url']) ? $_GET['url'] : "index";
-	$url = explode("/", filter_var(trim($url,"/"),FILTER_SANITIZE_URL));
-
-	return $url;
-}
-
-function split_url_from_string($str)
-{
-	$url = isset($str) ? $str : "index";
-	$url = explode("/", filter_var(trim($url,"/"),FILTER_SANITIZE_URL));
-
-	return $url;
-}
-
-function check_messages(){
-
-	$DB = new Database();
-	$me = esc($_SESSION['readbook_userid']);
- 
-	$query = "select * from messages where (receiver = '$me' && deleted_receiver = 0 && seen = 0) limit 100";
-	$data = $DB->read($query);
-
-	if(is_array($data)){
-		return count($data);
-	}
-	return 0;
-}
-
-function check_seen_thread($msgid){
-
-	$DB = new Database();
-	$me = esc($_SESSION['readbook_userid']);
- 
-	$query = "select * from messages where (receiver = '$me' && deleted_receiver = 0 && seen = 0 && msgid = '$msgid') limit 100";
-	$data = $DB->read($query);
-
-	if(is_array($data)){
-		return count($data);
-	}
-	return 0;
-}
-
-
-function is_invited($groupid,$userid){
-
-	$userid = addslashes($userid);
-	$groupid = addslashes($groupid);
-
-	$DB = new Database();
-
-	$query = "select userid from group_invites where groupid = '$groupid' && userid = '$userid' && disabled = 0 limit 1";
-	$data = $DB->read($query);
-	if(is_array($data)){
-		return true;
-	}
-	return false;
-}
-
-
-function group_access($userid,$group_data,$access){
-
-	//$admins = array($group_data["owner"]); 
-	//$moderators = array($group_data["owner"]); 
-	//$members = array($group_data["owner"]);
-
-	//$group_type = $group_data["group_type"];
-	if($group_data["owner"] == $userid){
-		return true;
-	}
-
-	$DB = new Database();
-	$groupid = $group_data["userid"];
-
-	if($access == 'member'){
-	
-		$query = "select userid from group_members where groupid = '$groupid' && userid = '$userid' && (role = 'member' || role = 'admin' || role = 'moderator') limit 1";
-		$data = $DB->read($query);
-		if(is_array($data)){
-			return true;
-		}
-		return false;
-	}else
-	if($access == 'moderator'){
-		$query = "select userid from group_members where groupid = '$groupid' && userid = '$userid' && (role = 'admin' || role = 'moderator') limit 1";
-		$data = $DB->read($query);
-		if(is_array($data)){
-			return true;
-		}
-		return false;
-	}else
-	if($access == 'admin'){
-		$query = "select userid from group_members where groupid = '$groupid' && userid = '$userid' && (role = 'admin') limit 1";
-		$data = $DB->read($query);
-		if(is_array($data)){
-			return true;
-		}
-		return false;
-	}else
-	if($access == 'request'){
-
-		$query = "select * from group_requests where userid = '$userid' && groupid = '$groupid' && disabled = 0 limit 1";
-		$data = $DB->read($query);
-		if(is_array($data)){
-			return true;
-		}
-		return false;
-	}
-
-	return false;
-	//admin, moderator, member, nonmember
 }

@@ -1,4 +1,5 @@
 <?php 
+/*
 
 	include("classes/autoload.php");
  
@@ -271,4 +272,5 @@
 		</div>
 
 	</body>
-</html>
+</html> */
+?>

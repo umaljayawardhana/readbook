@@ -78,7 +78,7 @@ class User
 		return false;
 	}
 
-	public function follow_user($id,$type,$mybook_userid){
+	public function follow_user($id,$type,$readbook_userid){
 
 			if($id == $readbook_userid && $type == 'user'){
 				return;
@@ -93,7 +93,7 @@ class User
 
 				$likes = json_decode($result[0]['following'],true);
 
-				$user_ids = array_column($likes, "userid");
+				$user_ids = array($likes, "userid");
  
 				if(!in_array($id, $user_ids)){
 

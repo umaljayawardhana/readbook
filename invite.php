@@ -1,4 +1,4 @@
-<?php 
+<?php /*
 
 include("classes/autoload.php");
 
@@ -32,4 +32,6 @@ if(group_access($_SESSION['readbook_userid'],$group_data,'member')){
 }
 
 header("Location: " . $return_to);
-die;
+die; */
+
+?>

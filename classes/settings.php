@@ -19,9 +19,8 @@ Class Settings
 
 		$DB = new Database();
 
-		$password = isset($data['password']) ? $data['password'] : "";
-
-		if(strlen($password) < 30 && isset($data['password2'])){
+		$password = $data['password'];
+		if(strlen($password) < 30){
 
 			if($data['password'] == $data['password2']){
 				$data['password'] = hash("sha1", $password);

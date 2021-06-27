@@ -110,8 +110,6 @@ class Signup
 		$password = $data['password'];
 		$userid = $data['userid'];
 		$tag_name = $data['tag_name'];
-		$date = date("Y-m-d H:i:s");
-		$type = "profile";
 
 		$password = hash("sha1", $password);
 		
@@ -119,9 +117,9 @@ class Signup
 		$url_address = strtolower($first_name) . "." . strtolower($last_name);
 
 		$query = "insert into users 
-		(type,userid,first_name,last_name,gender,email,password,url_address,tag_name,date) 
+		(userid,first_name,last_name,gender,email,password,url_address,tag_name) 
 		values 
-		('$type','$userid','$first_name','$last_name','$gender','$email','$password','$url_address','$tag_name','$date')";
+		('$userid','$first_name','$last_name','$gender','$email','$password','$url_address','$tag_name')";
 
 
 		$DB = new Database();

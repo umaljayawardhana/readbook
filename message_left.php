@@ -1,5 +1,5 @@
 
-	<div id="message_left" style="background-color: #eee;">
+	<!--<div id="message_left" style="background-color: #eee;">
 		<div>
 		
 			<?php 
@@ -48,7 +48,7 @@
 		 
 		<span style="color: #999;">
 			
-			<?php echo Time::get_time($MESSAGE['date']) ?>
+			<?php // echo Time::get_time($MESSAGE['date']) ?>
 
 		</span>
 
@@ -77,4 +77,4 @@
 		</span>
  
 		</div>
-	</div>
+	</div> -->

@@ -4,9 +4,10 @@ class Post
 {
 	private $error = "";
 
-	public function create_post($userid, $data, $files, $owner = 0)
+	public function create_post($userid, $data, $files)
 	{
- 		
+
+
 		if(!empty($data['post']) || !empty($files['file']['name']) || isset($data['is_profile_image']) || isset($data['is_cover_image']))
 		{
 
@@ -48,21 +49,15 @@ class Post
 						}
 					
 					$allowed[] = "image/jpeg";
-					$allowed[] = "video/mp4";
 
 					if(in_array($files['file']['type'], $allowed)){
 
 						$image_class = new Image();
 
-						$ext = pathinfo($files['file']['name'],PATHINFO_EXTENSION);
-						$ext = strtolower($ext);
-
-						$myimage = $folder . $image_class->generate_filename(15) . "." . $ext;
+						$myimage = $folder . $image_class->generate_filename(15) . ".jpg";
 						move_uploaded_file($files['file']['tmp_name'], $myimage);
 
-						if($ext == "jpg" || $ext == "jpeg"){
-							$image_class->resize_image($myimage,$myimage,1500,1500);
-						}
+						$image_class->resize_image($myimage,$myimage,1500,1500);
 
 						$has_image = 1;
 					}else{
@@ -107,7 +102,7 @@ class Post
 					$DB->save($sql);
 				}
 
-				$query = "insert into posts (owner,userid,postid,post,image,has_image,is_profile_image,is_cover_image,parent,tags) values ('$owner','$userid','$postid','$post','$myimage','$has_image','$is_profile_image','$is_cover_image','$parent','$tags')";
+				$query = "insert into posts (userid,postid,post,image,has_image,is_profile_image,is_cover_image,parent,tags) values ('$userid','$postid','$post','$myimage','$has_image','$is_profile_image','$is_cover_image','$parent','$tags')";
 				$DB->save($query);
 
 				//notify those that were tagged
@@ -135,7 +130,7 @@ class Post
 				{
 
 
-					$folder = "uploads/" . $userid . "/";
+					$folder = "uploads/" . $this->userid . "/";
 
 						//create folder
 						if(!file_exists($folder))
@@ -185,7 +180,7 @@ class Post
 
 	
 
-	public function get_posts($id,$post_type = "profile")
+	public function get_posts($id)
 	{
 
 		$page_number = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -194,11 +189,7 @@ class Post
 		$limit = 10;
  		$offset = ($page_number - 1) * $limit;
 
-		$query = "select * from posts where parent = 0 and owner = 0 and userid = '$id' order by id desc limit $limit offset $offset";
-		
-		if($post_type == "group"){
-			$query = "select * from posts where parent = 0 and owner = '$id' order by id desc limit $limit offset $offset";
-		}
+		$query = "select * from posts where parent = 0 and userid = '$id' order by id desc limit $limit offset $offset";
 
 		$DB = new Database();
 		$result = $DB->read($query);
@@ -368,7 +359,7 @@ class Post
 			$result = $DB->read($sql);
 			if(is_array($result)){
 
-				$likes = json_decode($result[0]['likes'],true);
+				$likes = array(json_decode($result[0]['likes'],true));
 
 				$user_ids = array_column($likes, "userid");
  

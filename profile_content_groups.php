@@ -1,4 +1,4 @@
-<div style="min-height: 400px;width:100%;background-color: white;text-align: center;">
+<!--<div style="min-height: 400px;width:100%;background-color: white;text-align: center;">
 
 	<br>
 	<a href="<?=ROOT?>create_group">
@@ -31,4 +31,5 @@
 	?>
 
 	</div>
-</div>
+</div> -->
+?>

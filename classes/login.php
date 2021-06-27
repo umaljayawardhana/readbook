@@ -65,7 +65,7 @@ class Login
 			}else
 			{
 				if($redirect){
-					header("Location: ".ROOT."login");
+					header("Location: login.php");
 					die;
 				}else{
 
@@ -77,7 +77,7 @@ class Login
 		}else
 		{
 			if($redirect){
-				header("Location: ".ROOT."login");
+				header("Location: login.php");
 				die;
 			}else{
 				$_SESSION['readbook_userid'] = 0;

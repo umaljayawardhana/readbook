@@ -7,10 +7,10 @@
  
  	$USER = $user_data;
  	
- 	if(isset($URL[2]) && is_numeric($URL[2])){
+ 	if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 	 	$profile = new Profile();
-	 	$profile_data = $profile->get_profile($URL[2]);
+	 	$profile_data = $profile->get_profile($_GET['id']);
 
 	 	if(is_array($profile_data)){
 	 		$user_data = $profile_data[0];
@@ -23,9 +23,9 @@
 	$likes = false;
 
 	$ERROR = "";
-	if(isset($URL[2]) && isset($URL[1])){
+	if(isset($_GET['id']) && isset($_GET['type'])){
  
-		$likes = $Post->get_likes($URL[2],$URL[1]);
+		$likes = $Post->get_likes($_GET['id'],$_GET['type']);
 	}else{
 
 		$ERROR = "No information post was found!";

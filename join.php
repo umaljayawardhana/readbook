@@ -1,4 +1,4 @@
-<?php 
+<?php /*
 
 include("classes/autoload.php");
 
@@ -21,4 +21,5 @@ $group_class = new Group();
 $group_class->join_group($groupid,$me);
 
 header("Location: " . $return_to);
-die;
+die; */
+?>

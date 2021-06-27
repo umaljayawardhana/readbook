@@ -13,10 +13,6 @@ if(isset($_SERVER['HTTP_REFERER'])){
 	$return_to = "profile.php";
 }
 
-
-$_GET['type'] = isset($URL[1]) ? $URL[1] : null;
-$_GET['id'] = isset($URL[2]) ? $URL[2] : null;
-
 	if(isset($_GET['type']) && isset($_GET['id'])){
 		
 		if(is_numeric($_GET['id'])){

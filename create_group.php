@@ -1,6 +1,6 @@
 <?php 
 
-	include("classes/autoload.php");
+	/*include("classes/autoload.php");
 
 	$login = new Login();
 	$_SESSION['readbook_userid'] = isset($_SESSION['readbook_userid']) ? $_SESSION['readbook_userid'] : 0;
@@ -259,4 +259,5 @@
 	</body>
 
 
-</html>
+</html>*/
+?>

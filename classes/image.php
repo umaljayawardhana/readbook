@@ -137,7 +137,7 @@ class Image
 
 	//resize the image
 	public function resize_image($original_file_name,$resized_file_name,$max_width,$max_height)
-{
+	{
 
 		if(file_exists($original_file_name))
 		{

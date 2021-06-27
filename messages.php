@@ -1,4 +1,4 @@
-<?php 
+<?php /*
 
 	include("classes/autoload.php");
 	$image_class = new Image();
@@ -350,4 +350,5 @@
 		</div>
 
 	</body>
-</html>
+</html> */
+?>

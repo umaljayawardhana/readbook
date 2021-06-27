@@ -7,10 +7,10 @@
  
  	$USER = $user_data;
  	
- 	if(isset($URL[1]) && is_numeric($URL[1])){
+ 	if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 	 	$profile = new Profile();
-	 	$profile_data = $profile->get_profile($URL[1]);
+	 	$profile_data = $profile->get_profile($_GET['id']);
 
 	 	if(is_array($profile_data)){
 	 		$user_data = $profile_data[0];
@@ -19,22 +19,13 @@
  	}
  	
 	
-	$Message = new Messages();
 	$Post = new Post();
 	$ROW = false;
 
 	$ERROR = "";
-	if(isset($URL[1]) && $URL[1] == "msg"){
+	if(isset($_GET['id'])){
 
-		$ROW = $Message->read_one($URL[2]);
-		if(is_array($ROW)){
-			$ROW['image'] = $ROW['file'];
-		}
-	}else
-	if(isset($URL[1])){
-
-		$ROW = $Post->get_one_post($URL[1]);
-	
+		$ROW = $Post->get_one_post($_GET['id']);
 	}else{
 
 		$ERROR = "No image was found!";
@@ -174,7 +165,7 @@
 
   					 		if(is_array($ROW)){
 
-								echo "<img src='".ROOT."$ROW[image]' style='width:100%;' />";  					 			
+								echo "<img src='$ROW[image]' style='width:100%;' />";  					 			
   					 		}
 
   					 ?>

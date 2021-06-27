@@ -1,5 +1,5 @@
 
-	<div id="message_right" style="background-color: #eee;">
+	<!--<div id="message_right" style="background-color: #eee;">
 
 <div style="width: 100%; text-align: right;">
     <div style="font-weight: bold;color: rgb(51, 168, 255);width: 100%;">
@@ -30,7 +30,7 @@
  
 <span style="color: #999;">
     
-    <?php echo Time::get_time($MESSAGE['date']) ?>
+    <?php // echo Time::get_time($MESSAGE['date']) ?>
 
 </span>
 
@@ -59,7 +59,7 @@
 </span>
 
 </div>
-<!--a label-->
+<a label->
 <div>
 
     <?php 
@@ -79,4 +79,4 @@
 
     <img src="<?php echo ROOT . $image ?>" style="width: 75px;margin-right: 4px;border-radius: 50%;">
 </div>
-</div>
+</div> -->
