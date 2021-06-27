@@ -18,7 +18,7 @@
   
 			?>
 
-			<img src="<?php echo ROOT . $image ?>" style="width: 75px;margin-right: 4px;border-radius: 50%;">
+			<img src="<?php echo $image ?>" style="width: 75px;margin-right: 4px;border-radius: 50%;">
 		</div>
 		<div style="width: 100%;">
 			<div style="font-weight: bold;color: rgb(51, 168, 255);width: 100%;">
@@ -61,22 +61,9 @@
 				if(file_exists($ROW['image']))
 				{
 
-					$ext = pathinfo($ROW['image'],PATHINFO_EXTENSION);
-					$ext = strtolower($ext);
+					$post_image = $image_class->get_thumb_post($ROW['image']);
 
-					if($ext == "jpeg" || $ext == "jpg"){
-
-						$post_image = $image_class->get_thumb_post($ROW['image']);
-
- 						echo "<img src='" . ROOT . "$post_image' style='width:80%;' />";
- 
-					}elseif($ext == "mp4"){
-
-						echo "<video controls style='width:100%' >
-							<source src='" . ROOT . "$ROW[image]' type='video/mp4' >
-						</video>";
- 						
-					}
+					echo "<img src='$post_image' style='width:80%;' />";
 				}
 				
 			?>
