@@ -128,11 +128,10 @@
 
 ?>
 
-
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>Change Profile Image | ReadBook</title>
+		<title>Change Profile Image | Readbook</title>
 	</head>
 
 	<style type="text/css">
@@ -140,7 +139,7 @@
 		#blue_bar{
 
 			height: 50px;
-			background-color: rgb(51, 168, 255);;
+			background-color: rgb(51, 168, 255);
 			color: #d9dfeb;
 
 		}
@@ -159,8 +158,7 @@
 
 		}
 
-
-	
+	 
 		#post_button{
 
 			float: right;
@@ -170,8 +168,7 @@
 			padding: 4px;
 			font-size: 14px;
 			border-radius: 2px;
-			width: 80px;
-			cursor: pointer;
+			width: 100px;
 		}
  
  		#post_bar{
@@ -203,44 +200,36 @@
 			<!--below cover area-->
 			<div style="display: flex;">	
 
-				<!--friends area-->			
-				
-
+				 
 				<!--posts area-->
  				<div style="min-height: 400px;flex:2.5;padding: 20px;padding-right: 0px;">
  					
-                    <form method="post" enctype="multipart/form-data" >
-                        <div style="border:solid thin #aaa; padding: 10px;background-color: white;">
+ 					<form method="post" enctype="multipart/form-data">
+	 					<div style="border:solid thin #aaa; padding: 10px;background-color: white;">
 
-                                <input type="file" name="file">
-                                
-                                <input id="post_button" type="submit" value="Change">
-                                <br>
-		 						<div style="text-align: center;"> 
-								 <br> <br>
-								 <?php
+	 						<input type="file" name="file"><br>
+	 						<input id="post_button" type="submit" value="Change">
+	 						<br>
+							<div style="text-align: center;">
+								<br><br>
+							<?php
 
-									//check for mode
-									if(isset($_GET['change']) && $_GET['change'] == "cover")
-									{
+ 								//check for mode
+								if(isset($_GET['change']) && $_GET['change'] == "cover")
+								{
 
 									$change = "cover";
-										echo "<img src='$user_data[cover_image]' style='max-width:500px;' >";
-									}else
-									{
+ 	 								echo "<img src='$user_data[cover_image]' style='max-width:500px;' >";
+								}else
+								{
 									echo "<img src='$user_data[profile_image]' style='max-width:500px;' >";
-									}
+								}
 
 
-								?>
+	 						?>
 							</div>
-								
-                            
-                        </div>
-                    </form>
- 
-	 				<!--posts-->
-	 				
+	 					</div>
+  					</form>
 
  				</div>
 			</div>
