@@ -9,10 +9,10 @@
  
  	$USER = $user_data;
  	
- 	if(isset($URL[1]) && is_numeric($URL[1])){
+ 	if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 	 	$profile = new Profile();
-	 	$profile_data = $profile->get_profile($URL[1]);
+	 	$profile_data = $profile->get_profile($_GET['id']);
 
 	 	if(is_array($profile_data)){
 	 		$user_data = $profile_data[0];
@@ -31,7 +31,7 @@
 			$settings_class = new Settings();
 			$settings_class->save_settings($_POST,$_SESSION['readbook_userid']);
 
-		}elseif(isset($_POST['post'])){
+		}else{
 
 			$post = new Post();
 			$id = $_SESSION['readbook_userid'];
@@ -39,7 +39,7 @@
 			
 			if($result == "")
 			{
-				header("Location: " . ROOT . "profile");
+				header("Location: profile.php");
 				die;
 			}else
 			{
@@ -67,8 +67,8 @@
 	$image_class = new Image();
 
 	//check if this is from a notification
-	if(isset($URL[2])){
-		notification_seen($URL[2]);
+	if(isset($_GET['notif'])){
+		notification_seen($_GET['notif']);
 	}
 
 ?>
@@ -76,7 +76,7 @@
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>Profile | readbook</title>
+		<title>Profile | Readbook</title>
 	</head>
 
 	<style type="text/css">
@@ -206,7 +206,7 @@
  		<div id="change_profile_image" style="display:none;position:absolute;width: 100%;height: 100%;background-color: #000000aa;">
  			<div style="max-width:600px;margin:auto;min-height: 400px;flex:2.5;padding: 20px;padding-right: 0px;">
  					
- 					<form method="post" action="<?=ROOT?>profile/profile" enctype="multipart/form-data">
+ 					<form method="post" action="profile.php?change=profile" enctype="multipart/form-data">
 	 					<div style="border:solid thin #aaa; padding: 10px;background-color: white;">
 
 	 						<input type="file" name="file"><br>
@@ -216,7 +216,7 @@
 								<br><br>
 							<?php
 
-								echo "<img src='" . ROOT . "$user_data[profile_image]' style='max-width:500px;' >";
+								echo "<img src='$user_data[profile_image]' style='max-width:500px;' >";
   
 	 						?>
 							</div>
@@ -230,7 +230,7 @@
  		<div id="change_cover_image" style="display:none;position:absolute;width: 100%;height: 100%;background-color: #000000aa;">
  			<div style="max-width:600px;margin:auto;min-height: 400px;flex:2.5;padding: 20px;padding-right: 0px;">
  					
- 					<form method="post" action="<?=ROOT?>profile/cover" enctype="multipart/form-data">
+ 					<form method="post" action="profile.php?change=cover" enctype="multipart/form-data">
 	 					<div style="border:solid thin #aaa; padding: 10px;background-color: white;">
 
 	 						<input type="file" name="file"><br>
@@ -240,7 +240,7 @@
 								<br><br>
 							<?php
 
- 	 							echo "<img src='" . ROOT . "$user_data[cover_image]' style='max-width:500px;' >";
+ 	 							echo "<img src='$user_data[cover_image]' style='max-width:500px;' >";
 								 
 	 						?>
 							</div>
@@ -253,7 +253,7 @@
 		<!--cover area-->
 		<div style="width: 800px;margin:auto;min-height: 400px;">
 			
-			<div style="background-color: white;text-align: center;color: rgb(51, 168, 255)">
+			<div style="background-color: white;text-align: center;color: rgb(51, 168, 255);">
 
 					<?php 
 
@@ -264,7 +264,7 @@
 						}
 					?>
 
-				<img src="<?php echo ROOT . $image ?>" style="width:100%;">
+				<img src="<?php echo $image ?>" style="width:100%;">
 
 
 				<span style="font-size: 12px;">
@@ -281,19 +281,19 @@
 						}
 					?>
 
-					<img id="profile_pic" src="<?php echo ROOT . $image ?>"><br/>
+					<img id="profile_pic" src="<?php echo $image ?>"><br/>
 
 					<?php if(i_own_content($user_data)):?>
 					
-						<a onclick="show_change_profile_image(event)" style="text-decoration: none;color:#f0f;" href="<?=ROOT?>change_profile_image/profile">Change Profile Image</a> | 
-						<a onclick="show_change_cover_image(event)" style="text-decoration: none;color:#f0f;" href="<?=ROOT?>change_profile_image/cover">Change Cover</a>
+						<a onclick="show_change_profile_image(event)" style="text-decoration: none;color:#f0f;" href="change_profile_image.php?change=profile">Change Profile Image</a> | 
+						<a onclick="show_change_cover_image(event)" style="text-decoration: none;color:#f0f;" href="change_profile_image.php?change=cover">Change Cover</a>
 					
 					<?php endif; ?>
 
 				</span>
 				<br>
 					<div style="font-size: 20px;color: black;">
-						<a href="<?=ROOT?>profile/<?php echo $user_data['userid'] ?>">
+						<a href="profile.php?id=<?php echo $user_data['userid'] ?>">
 							<?php echo $user_data['first_name'] . " " . $user_data['last_name']  ?>
 							<br><span style="font-size:12px;">@<?=$user_data['tag_name']?></span>
 						</a>
@@ -306,38 +306,23 @@
 							}
 						?>
 						<br>
-
-						<a href="<?=ROOT?>like/user/<?php echo $user_data['userid'] ?>">
+						<a href="like.php?type=user&id=<?php echo $user_data['userid'] ?>">
 							<input id="post_button" type="button" value="Follow <?php echo $mylikes ?>" style="margin-right:10px;background-color: #9b409a;width:auto;">
 						</a>
 
-						<?php if($user_data['userid'] == $_SESSION['readbook_userid']): ?>
-							<a href="<?=ROOT?>messages">
-								<input id="post_button" type="button" value="Messages" style="margin-right:10px;background-color: #1b9186;width:auto;">
-							</a>
-						<?php else: ?>
-							<a href="<?=ROOT?>messages/new/<?=$user_data['userid']?>">
-								<input id="post_button" type="button" value="Message" style="margin-right:10px;background-color: #1b9186;width:auto;">
-							</a>
-						<?php endif; ?>
- 						
-
 					</div>
 				<br>
-				<br>
 
 
-				<a href="<?=ROOT?>home"><div id="menu_buttons">Timeline</div></a>
-				<a href="<?=ROOT?>profile/<?php echo $user_data['userid'] ?>/about"><div id="menu_buttons">About</div></a>
-				<a href="<?=ROOT?>profile/<?php echo $user_data['userid'] ?>/followers"><div id="menu_buttons">Followers</div></a>
-				<a href="<?=ROOT?>profile/<?php echo $user_data['userid'] ?>/following"><div id="menu_buttons">Following</div></a>
-				<a href="<?=ROOT?>profile/<?php echo $user_data['userid'] ?>/photos"><div id="menu_buttons">Photos</div></a>
+				<a href="index.php"><div id="menu_buttons">Timeline</div></a>
+				<a href="profile.php?section=about&id=<?php echo $user_data['userid'] ?>"><div id="menu_buttons">About</div></a>
+				<a href="profile.php?section=followers&id=<?php echo $user_data['userid'] ?>"><div id="menu_buttons">Followers</div></a>
+				<a href="profile.php?section=following&id=<?php echo $user_data['userid'] ?>"><div id="menu_buttons">Following</div></a>
+				<a href="profile.php?section=photos&id=<?php echo $user_data['userid'] ?>"><div id="menu_buttons">Photos</div></a>
 				
 				<?php 
 					if($user_data['userid'] == $_SESSION['readbook_userid']){
-						
-						echo '<a href="'.ROOT. 'profile/'.$user_data['userid'].'/groups"><div id="menu_buttons">Groups</div></a>';
-						echo '<a href="'.ROOT. 'profile/'.$user_data['userid'].'/settings"><div id="menu_buttons">Settings</div></a>';
+						echo '<a href="profile.php?section=settings&id='.$user_data['userid'].'"><div id="menu_buttons">Settings</div></a>';
 					}
 				?>
 			</div>
@@ -347,10 +332,9 @@
 	 		<?php 
 
 	 			$section = "default";
+	 			if(isset($_GET['section'])){
 
-	 			if(isset($URL[2])){
-
-	 				$section = $URL[2];
+	 				$section = $_GET['section'];
 	 			}
 
 	 			if($section == "default"){
@@ -376,9 +360,6 @@
 	 			}elseif($section == "photos"){
 
 	 				include("profile_content_photos.php");
-	 			}elseif($section == "groups"){
-
-	 				include("profile_content_groups.php");
 	 			}
 
 
