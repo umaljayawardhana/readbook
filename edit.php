@@ -6,11 +6,11 @@
 	$user_data = $login->check_login($_SESSION['readbook_userid']);
  
  	$USER = $user_data;
-
- 	if(isset($URL[1]) && is_numeric($URL[1])){
+ 	
+ 	if(isset($_GET['id']) && is_numeric($_GET['id'])){
 
 	 	$profile = new Profile();
-	 	$profile_data = $profile->get_profile($URL[1]);
+	 	$profile_data = $profile->get_profile($_GET['id']);
 
 	 	if(is_array($profile_data)){
 	 		$user_data = $profile_data[0];
@@ -21,9 +21,9 @@
 	$Post = new Post();
 
 	$ERROR = "";
-	if(isset($URL[1])){
+	if(isset($_GET['id'])){
 
-		 $ROW = $Post->get_one_post($URL[1]);
+		 $ROW = $Post->get_one_post($_GET['id']);
 
 		 if(!$ROW){
 
@@ -41,7 +41,7 @@
 		$ERROR = "No such post was found!";
 	}
 
-	if(isset($_SERVER['HTTP_REFERER']) && !strstr($_SERVER['HTTP_REFERER'], "/edit/")){
+	if(isset($_SERVER['HTTP_REFERER']) && !strstr($_SERVER['HTTP_REFERER'], "edit.php")){
 
 		$_SESSION['return_to'] = $_SERVER['HTTP_REFERER'];
 	}
@@ -203,23 +203,9 @@
 	 									if(file_exists($ROW['image']))
 										{
 											$image_class = new Image();
-  
-											$ext = pathinfo($ROW['image'],PATHINFO_EXTENSION);
-											$ext = strtolower($ext);
+											$post_image = $image_class->get_thumb_post($ROW['image']);
 
-											if($ext == "jpeg" || $ext == "jpg"){
-
-												$post_image = $image_class->get_thumb_post($ROW['image']);
-
-												echo "<br><br><div style='text-align:center;'><img src='$post_image' style='width:50%;' /></div>";
-
-											}elseif($ext == "mp4"){
-
-												echo "<video controls style='width:100%' >
-													<source src='" . ROOT . "$ROW[image]' type='video/mp4' >
-												</video>";
-						 						
-											}
+											echo "<br><br><div style='text-align:center;'><img src='$post_image' style='width:50%;' /></div>";
 										}
 
  									}
