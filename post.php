@@ -1,246 +1,248 @@
-<?php
 
-
-    session_start();
-    //unset($_SESSION['readbook_userid']); //logout
-
-    //print_r($_SESSION);
-    //$_SESSION['readbook_userid'] == "";
-    include("classes/connect.php");
-    include("classes/login.php");
-    include("classes/user.php");
-    include("classes/post.php");
-    include("classes/image.php");
-
-    $login = new Login();
-	$user_data = $login->check_login($_SESSION['readbook_userid']);
-
-	/*echo "<pre>";
-	print_r($_GET);
-	echo "<\pre>";*/
-
-    //for posting starts here 
-	if($_SERVER['REQUEST_METHOD'] == "POST"){
-
-
-        if(isset($_FILES['file']['name']) && $_FILES['file']['name'] != ""){ //check file in
-
-            if($_FILES['file']['type'] == "image/jpeg"){
-
-                $allowed_size = (1024 * 1024)* 3;
-
-                if ($_FILES['file']['size'] < $allowed_size) {
-
-					//everything is fine
-					$folder =  "uploads/". $user_data['userid'] . "/";
-					//create folder
-					if(!file_exists($folder)){
-						mkdir($folder, 0777,true);
-					}
-
-					$image = new Image();
-
-                    $filename = $folder . $image->generate_filename(15) . ".jpg";
-                    move_uploaded_file($_FILES['file']['tmp_name'], $filename );
-
-					$change = "profile";
-					//check for mode
-
-					if(isset($_GET['change'])){
-						$change = $_GET['change'];
-					}
-					
-
-                   
-
-
-					if($change == "cover")
-					{
-						if(file_exists($user_data['cover_image'])){
-							unlink($user_data['cover_image']);
-						}
-						
-						$image->crop_image($filename,$filename,1500,500);
-
-					}else{
-						if(file_exists($user_data['profile_image'])){
-							unlink($user_data['profile_image']);
-						}
-
-						$image->crop_image($filename,$filename,800,800);
-						
-					}
-
-
-
-        
-                    if(file_exists($filename)){
-                        //echo "umal";
-                        $userid = $user_data['userid'];
-						
-						if($change == "cover")
-						{
-							$query = "update users set cover_image ='$filename' where userid = '$userid' limit 1";
-
-						}else{
-
-							$query = "update users set profile_image ='$filename' where userid = '$userid' limit 1";
-						}
-
-                        //print_r($userid);
-                        $DB = new Database();
-                        $DB->save($query);
-        
-                        header(("Location: profile.php"));
-                        die;
-        
-                    }
-
-                    # code...
-                }else{
-                    echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
-                    echo "<br>The following errors occured:<br><br>";
-                    echo "Only images of size 3MB or lower are allowed";
-                    echo "</div>";
-                }
-                 
-            }else{
-                echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
-				echo "<br>The following errors occured:<br><br>";
-				echo "Only image type is jpeg support please upload valid format!";
-				echo "</div>";
-            }
-
-           
-
-        }else{
-                echo "<div style='text-align:center;font-size:12px;color:white;background-color:grey;'>";
-				echo "<br>The following errors occured:<br><br>";
-				echo "Please add a valid image !";
-				echo "</div>";
-        }
-       
-
-    }
-
-    $login = new Login();
-    $user_data = $login->check_login($_SESSION['readbook_userid']);
-
-?>
-
-<!DOCTYPE html>
-	<html>
-	<head>
-		<title>Change Profile Image | ReadBook</title>
-	</head>
-
-	<style type="text/css">
+	<div id="post">
+		<div>
 		
-		#blue_bar{
+			<?php 
+				$time = new Time();
 
-			height: 50px;
-			background-color: rgb(51, 168, 255);;
-			color: #d9dfeb;
+				$image = "images/user_male.jpg";
+				if($ROW_USER['gender'] == "Female")
+				{
+					$image = "images/user_female.jpg";
+				}
 
-		}
+				if(file_exists($ROW_USER['profile_image']))
+				{
+					$image = $image_class->get_thumb_profile($ROW_USER['profile_image']);
+				}
+  
+			?>
 
-		#search_box{
-
-			width: 400px;
-			height: 20px;
-			border-radius: 5px;
-			border:none;
-			padding: 4px;
-			font-size: 14px;
-			background-image: url(search.png);
-			background-repeat: no-repeat;
-			background-position: right;
-
-		}
-
-
-	
-		#post_button{
-
-			float: right;
-			background-color: rgb(51, 168, 255);
-			border:none;
-			color: white;
-			padding: 4px;
-			font-size: 14px;
-			border-radius: 2px;
-			width: 80px;
-			cursor: pointer;
-		}
- 
- 		#post_bar{
-
- 			margin-top: 20px;
- 			background-color: white;
- 			padding: 10px;
- 		}
-
- 		#post{
-
- 			padding: 4px;
- 			font-size: 13px;
- 			display: flex;
- 			margin-bottom: 20px;
- 		}
-
-	</style>
-
-	<body style="font-family: tahoma; background-color: #d0d8e4;">
-
-		<br>
-		<?php include("header.php"); ?>
-
-		<!--cover area-->
-		<div style="width: 800px;margin:auto;min-height: 400px;">
-			
-			 
-			<!--below cover area-->
-			<div style="display: flex;">	
-
-				<!--friends area-->			
-				
-
-				<!--posts area-->
- 				<div style="min-height: 400px;flex:2.5;padding: 20px;padding-right: 0px;">
- 					
-                    <form method="post" enctype="multipart/form-data" >
-                        <div style="border:solid thin #aaa; padding: 10px;background-color: white;">
-
-                                <input type="file" name="file">
-                                
-                                <input id="post_button" type="submit" value="Change">
-                                <br>
-		 						<div style="text-align: center;"> 
-								 <br> <br>
-								 <?php
-								 	$change = "profile";
-
-									if(isset($_GET['change']) && $_GET['change'] == "cover" ){
-										$change = $_GET['cover'];
-										echo "<img src='$user_data[cover_image]' style='max-width:500px;'>";
-									}else{
-										echo "<img src='$user_data[profile_image]' style='max-width:500px;'>";
-									}
-									 
-									
-								?>
-								</div>
-                            
-                        </div>
-                    </form>
- 
-	 				<!--posts-->
-	 				
-
- 				</div>
-			</div>
-
+			<img src="<?php echo $image ?>" style="width: 75px;margin-right: 4px;border-radius: 50%;">
 		</div>
+		<div style="width: 100%;">
+			<div style="font-weight: bold;color: rgb(51, 168, 255);width: 100%;">
+				<?php 
+					echo "<a href='profile.php?id=$ROW[userid]'>";
+					echo htmlspecialchars($ROW_USER['first_name']) . " " . htmlspecialchars($ROW_USER['last_name']); 
+					echo "</a>";
 
-	</body>
-</html>
+					if($ROW['is_profile_image'])
+					{
+						$pronoun = "his";
+						if($ROW_USER['gender'] == "Female")
+						{
+							$pronoun = "her";
+						}
+						echo "<span style='font-weight:normal;color:#aaa;'> updated $pronoun profile image</span>";
+
+					}
+
+					if($ROW['is_cover_image'])
+					{
+						$pronoun = "his";
+						if($ROW_USER['gender'] == "Female")
+						{
+							$pronoun = "her";
+						}
+						echo "<span style='font-weight:normal;color:#aaa;'> updated $pronoun cover image</span>";
+
+					}
+
+
+				?>
+
+			</div>
+			
+			<?php echo check_tags($ROW['post']) ?>
+
+			<br><br>
+
+			<?php 
+
+				if(file_exists($ROW['image']))
+				{
+
+					$post_image = $image_class->get_thumb_post($ROW['image']);
+
+					echo "<img src='$post_image' style='width:80%;' />";
+				}
+				
+			?>
+
+		<br/><br/>
+		<?php 
+			$likes = "";
+
+			$likes = ($ROW['likes'] > 0) ? "(" .$ROW['likes']. ")" : "" ;
+
+		?>
+		<a onclick="like_post(event)" href="like.php?type=post&id=<?php echo $ROW['postid'] ?>">Like<?php echo $likes ?></a> . 
+
+		<?php 
+			$comments = "";
+
+			if($ROW['comments'] > 0){
+
+				$comments = "(" . $ROW['comments'] . ")";
+			}
+
+		?>
+
+		<a href="single_post.php?id=<?php echo $ROW['postid'] ?>">Comment<?php echo $comments ?></a> . 
+
+		<span style="color: #999;">
+			
+			<?php echo $time->get_time($ROW['date']) ?>
+
+		</span>
+
+		<?php 
+
+			if($ROW['has_image']){
+
+				echo "<a href='image_view.php?id=$ROW[postid]' >";
+				echo ". View Full Image . ";
+				echo "</a>";
+			}
+		?>
+
+		<span style="color: #999;float:right">
+			
+			<?php 
+
+				$post = new Post();
+
+				if($post->i_own_post($ROW['postid'],$_SESSION['readbook_userid'])){
+
+					echo "
+					<a href='edit.php?id=$ROW[postid]'>
+		 				Edit
+					</a> .
+
+					 <a href='delete.php?id=$ROW[postid]' >
+		 				Delete
+					</a>";
+				}
+ 
+			 ?>
+
+		</span>
+
+			<?php 
+
+				$i_liked = false;
+
+				if(isset($_SESSION['readbook_userid'])){
+
+					$DB = new Database();
+
+					$sql = "select likes from likes where type='post' && contentid = '$ROW[postid]' limit 1";
+					$result = $DB->read($sql);
+					if(is_array($result)){
+
+						$likes = json_decode($result[0]['likes'],true);
+
+						$user_ids = array_column($likes, "userid");
+		 
+						if(in_array($_SESSION['readbook_userid'], $user_ids)){
+							$i_liked = true;
+						}
+					}
+
+				}
+
+			 	echo "<a id='info_$ROW[postid]' href='likes.php?type=post&id=$ROW[postid]'>";
+			 	
+			 	if($ROW['likes'] > 0){
+
+			 		echo "<br/>";
+
+			 		if($ROW['likes'] == 1){
+
+			 			if($i_liked){
+			 				echo "<div style='text-align:left;'>You liked this post </div>";
+			 			}else{
+			 				echo "<div style='text-align:left;'> 1 person liked this post </div>";
+			 			}
+			 		}else{
+
+			 			if($i_liked){
+
+			 				$text = "others";
+			 				if($ROW['likes'] - 1 == 1){
+			 					$text = "other";
+			 				}
+			 				echo "<div style='text-align:left;'> You and " . ($ROW['likes'] - 1) . " $text liked this post </div>";
+			 			}else{
+			 				echo "<div style='text-align:left;'>" . $ROW['likes'] . " other liked this post </div>";
+			 			}
+			 		}
+
+
+			 	}
+			 	echo "</a>";
+			?>
+		</div>
+	</div>
+
+<script type="text/javascript">
+	
+
+	function ajax_send(data,element){
+
+		var ajax = new XMLHttpRequest();
+
+		ajax.addEventListener('readystatechange', function(){
+
+			if(ajax.readyState == 4 && ajax.status == 200){
+
+				response(ajax.responseText,element);
+			}
+			
+		});
+
+  		data = JSON.stringify(data);
+
+		ajax.open("post","ajax.php",true);
+		ajax.send(data);
+
+	}
+
+	function response(result,element){
+
+		if(result != ""){
+
+			var obj = JSON.parse(result);
+			if(typeof obj.action != 'undefined'){
+
+				if(obj.action == 'like_post'){
+
+					var likes = "";
+
+					if(typeof obj.likes != 'undefined'){
+						likes = (parseInt(obj.likes) > 0) ? "Like(" +obj.likes+ ")" : "Like" ;
+						element.innerHTML = likes;
+					}
+
+					if(typeof obj.info != 'undefined'){
+						var info_element = document.getElementById(obj.id);
+						info_element.innerHTML = obj.info;
+					}
+				}
+			}
+		}
+	}
+
+	function like_post(e){
+
+		e.preventDefault();
+		var link = e.target.href;
+
+		var data = {};
+		data.link = link;
+		data.action = "like_post";
+		ajax_send(data,e.target);
+	}
+
+</script>
